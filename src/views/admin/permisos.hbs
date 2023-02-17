@@ -1,0 +1,20 @@
+<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3">
+    {{#each user}} <!-- repite por cada carta -->
+        <div class="col mb-4 ">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title d-flex justify-content-between align-items-center">
+                        {{name}} <a href="/admin/permisos/edit-usuario/{{_id}}"><i class="fa-solid fa-pencil"></i></a>
+                    </h4>
+                    <p>{{email}}</p>
+                    <p>{{#if (eq permisos  0)}} Administrador {{/if}}{{#if (eq permisos  1)}} Entrenador {{/if}}{{#if (eq permisos  2)}} Cliente {{/if}}</p>
+                    <form action="/admin/permisos/delete/{{_id}}?_method=DELETE" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger btn-block btn-sm">BORRAR</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+</div>
+

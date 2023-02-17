@@ -1,0 +1,30 @@
+<div class="col-md-4 mx-auto">
+    <div class="card">
+        <div class="card-header">
+            <h3>Editando Usuario</h3>
+        </div>
+        <div class="card-body">
+            <form action="/admin/permisos/edit-usuario/{{user._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="_method" value="PUT">
+                <div class="form-group">
+                    <input type="text" name="name" class="form-control" value="{{user.name}}">
+                </div>
+                <div class="form-group">
+                    <textarea name="email" class="form-control">{{user.email}}</textarea>
+                </div>
+                {{!-- Modificador de permisos --}}
+                <div class="form-group">
+                    <select class="form-control" name="permisos">
+                    <option {{#if (eq user.permisos  0)}} selected {{/if}} value=0 >Administrador</option>
+                    <option {{#if (eq user.permisos  1)}} selected {{/if}} value=1  >Entrenador</option>
+                    <option {{#if (eq user.permisos  2)}} selected {{/if}} value=2 >Cliente</option>
+                    </select>
+                </div>
+                {{!-- Fin de modificador --}}
+                <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit">GUARDAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

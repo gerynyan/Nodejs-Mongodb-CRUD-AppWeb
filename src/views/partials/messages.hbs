@@ -1,0 +1,20 @@
+<!-- MENSAJES -->
+{{#if success_msg}}
+    <div class="alert alert-success alert-dismissible fade show">
+        {{success_msg}}
+        <button typle="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+{{/if}}
+
+{{#if error_msg}}
+    <div class="alert alert-danger alert-dismissible fade show">
+        {{error_msg}}
+        <button typle="button" class="close" data-dismiss="alert" aria-label="close">
+            <span aria-hidden="true">&times;</span>
+         </button>
+    </div>
+
+{{/if}}

@@ -1,0 +1,8 @@
+body{
+    background: lightgrey;
+}
+.img-thumbnail{
+    background: none;
+    border: none;
+    width: 60%;
+}
