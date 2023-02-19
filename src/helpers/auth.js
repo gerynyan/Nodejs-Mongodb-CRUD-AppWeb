@@ -26,7 +26,7 @@ helpers.isAdmin = (req, res, next) => {
 helpers.isEntrenador = (req, res, next) => {
     if (req.isAuthenticated()){
         if(res.locals.user.permisos === 1){
-            console.log(res.locals.user.permisos);
+            console.log('Is Entrenador: '+res.locals.user.permisos);
             return next();
         }
     }

@@ -11,14 +11,14 @@ adminCtrl.renderPermisos = async (req, res) =>{
 //Renderiza formulario para editar Usuarios
 adminCtrl.renderEditUserForm = async (req, res) => {
     const user = await User.findById(req.params.id).lean();
-    console.log(user);
+    console.log('EditUserForm: '+user);
     res.render('admin/edit-usuario', {user});
 };
 
 //Manda la petición de edición y devuelve a /permisos
 adminCtrl.updateUser = async (req, res) => {
     const {name, email, permisos} = req.body;
-    console.log(name, email, permisos)
+    console.log('Update user' +name, email, permisos)
     await User.findByIdAndUpdate(req.params.id, {name, email, permisos})
     // mensaje
     req.flash('success_msg', 'Usuario editado correctamente');
@@ -36,11 +36,10 @@ adminCtrl.deleteUser = async (req, res) => {
 adminCtrl.renderCitas = async (req, res) =>{
     const notes = await Note.find({idEntrenador: req.user._id}).lean();
     const users = await User.findById(notes.user).lean();
-    console.log(notes.user);
-    console.log(users);
+    console.log('RenderCitas1: '+notes.user);
+    console.log('RenderCitas2: '+users);
     res.render('admin/citas', {notes});
 }
-//63d424e92f7b5de02fcbb542
 
 
 

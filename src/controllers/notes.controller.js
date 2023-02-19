@@ -33,7 +33,7 @@ notesCtrl.renderEditForm = async (req, res) => {
         req.flash('error_msg', 'No tiene autorizción');
         return res.redirect('/notes');
     }
-    console.log(note);
+    console.log('RenderEditForm: '+note);
     res.render('notes/edit-note', {note});
 };
 

@@ -57,23 +57,6 @@ usersCtrl.signin = passport.authenticate('local',  {
     failureFlash: true
 })
 
-
-// usersCtrl.signin = (req, res) => {
-//      if(req.body.permisos == 0){
-//         passport.authenticate('local',  {
-//             failureRedirect: '/users/signin',
-//             successRedirect: '/admin/permisos',
-//             failureFlash: true
-//         })
-//     }else{
-//         passport.authenticate('local',  {
-//             failureRedirect: '/users/signin',
-//             successRedirect: '/notes',
-//             failureFlash: true
-//         })
-//     }
-// }
-
 //Para cerrar sesión
 usersCtrl.logout = (req, res) => {
     req.logout(function(err){ // antes req.logout() deprecado para evitar "session fixation attacks."

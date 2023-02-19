@@ -22,7 +22,7 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
 
     helpers:{
         eq: function(op1, op2){
-            console.log(op1, op2)
+            console.log('Comparar nivel: '+ op1, op2)
             if (op1 == op2){
                 return true;
             }else{
