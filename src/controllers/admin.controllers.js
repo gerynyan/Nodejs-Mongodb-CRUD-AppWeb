@@ -1,6 +1,7 @@
 const adminCtrl = {};
 const User = require('../models/User');  
 const Note = require('../models/Note');
+const mongoose = require('mongoose');
 
 //Renderiza permisos
 adminCtrl.renderPermisos = async (req, res) =>{
@@ -34,14 +35,35 @@ adminCtrl.deleteUser = async (req, res) => {
 
 //Renderiza citas
 adminCtrl.renderCitas = async (req, res) =>{
-    const notes = await Note.find({idEntrenador: req.user._id}).lean();
-    const users = await User.findById(notes.idCliente).lean();
-    console.log('Notas: '+notes);
+    try{
+        const notes = await Note.find({idEntrenador: req.user._id}).exec();
 
-    console.log('Cita: id del cliente: '+notes.idCliente);
-    console.log('Cita:Busca users: '+users);
-    res.render('admin/citas', {notes});
-}
+        const notesNombres = await Promise.all(notes.map(async (nota) => {
+            const[cliente, entrenador] = await Promise.all([
+                User.findById(nota.idCliente),
+                User.findById(nota.idEntrenador),
+            ]);
+
+            if (!cliente || !entrenador){
+                console.log('Cliente o Entrenador no encontrados: ${note._id');
+                return null;
+            }
+
+            return{
+                _id: nota._id,
+                title: nota.title,
+                fecha: nota.fecha,
+                description: nota.description,
+                cliente: cliente.name,
+                entrenador: entrenador.name,
+            };
+        }))
+        res.render('admin/citas', {notes: notesNombres,});
+    }catch (error){
+        console.error(error);
+        res.status(500).send('server error');
+    }
+};
 
 
 
