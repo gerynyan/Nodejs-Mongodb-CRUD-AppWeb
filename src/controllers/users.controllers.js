@@ -15,7 +15,7 @@ usersCtrl.renderSignUpForm = (req, res) =>{
 usersCtrl.signup = async (req, res) =>{
     const errors = []
     //VERIFICA CONTRASEÑA Y EMAIL
-    const {name, email, password, confirm_password} = req.body;
+    const {name,surname, email, password, confirm_password} = req.body;
     if(password != confirm_password){
         errors.push({text: 'Contraseñas no coinciden'});
     }
@@ -26,6 +26,7 @@ usersCtrl.signup = async (req, res) =>{
         res.render('users/signup', {
             errors,
             name, 
+            surname,
             email,
             password,
             confirm_password
@@ -37,7 +38,7 @@ usersCtrl.signup = async (req, res) =>{
             res.redirect('/users/signup');
         }else{
             // CREA USUSARIO Y AÑADE A BD
-            const newUser = new User({name, email, password, permisos:2});
+            const newUser = new User({name: name+' '+surname, email, password, permisos:2});
             newUser.password = await newUser.encryptPassword(password)
             await newUser.save();
             req.flash('success_msg', 'Usuario registrado con éxito');
