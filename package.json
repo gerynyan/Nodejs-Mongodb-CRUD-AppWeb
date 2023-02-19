@@ -27,5 +27,13 @@
     "handlebars": "^4.5.0",
     "nodemon": "^2.0.20",
     "npm-check-updates": "^16.4.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Loxtombox/Nodejs-Mongodb-CRUD-AppWeb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Loxtombox/Nodejs-Mongodb-CRUD-AppWeb/issues"
+  },
+  "homepage": "https://github.com/Loxtombox/Nodejs-Mongodb-CRUD-AppWeb#readme"
 }
