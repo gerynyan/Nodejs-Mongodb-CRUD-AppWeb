@@ -5,7 +5,7 @@ const User = require('../models/User');
 //controlador para renderizar vistas y procesar peticones.
 
 notesCtrl.renderNoteform = async (req, res) => {
-    const users = await User.find({user: req.user}).lean();
+    const users = await User.find({idCliente: req.user}).lean();
     res.render('notes/new-note', {users});
 };
 
@@ -13,7 +13,7 @@ notesCtrl.renderNoteform = async (req, res) => {
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description, fecha, idEntrenador} = req.body;
     const newNote = new Note({title, description, fecha, idEntrenador});
-    newNote.user = req.user.id;   
+    newNote.idCliente = req.user.id;   
     await newNote.save();
     // mensaje
     req.flash('succes_msg', 'Nota agregada con éxito');
@@ -22,14 +22,14 @@ notesCtrl.createNewNote = async (req, res) => {
 
 //Muestra todas las notas del usuario
 notesCtrl.renderNotes = async (req, res) => {
-    const notes = await Note.find({user: req.user.id}).lean();
+    const notes = await Note.find({idCliente: req.user.id}).lean();
     res.render('notes/all-notes', {notes});
 };
 
 //Renderiza formulario para editar Notas
 notesCtrl.renderEditForm = async (req, res) => {
     const note = await Note.findById(req.params.id).lean();
-    if(note.user != req.user.id){
+    if(note.idCliente != req.user.id){
         req.flash('error_msg', 'No tiene autorizción');
         return res.redirect('/notes');
     }

@@ -35,9 +35,11 @@ adminCtrl.deleteUser = async (req, res) => {
 //Renderiza citas
 adminCtrl.renderCitas = async (req, res) =>{
     const notes = await Note.find({idEntrenador: req.user._id}).lean();
-    const users = await User.findById(notes.user).lean();
-    console.log('RenderCitas1: '+notes.user);
-    console.log('RenderCitas2: '+users);
+    const users = await User.findById(notes.idCliente).lean();
+    console.log('Notas: '+notes);
+
+    console.log('Cita: id del cliente: '+notes.idCliente);
+    console.log('Cita:Busca users: '+users);
     res.render('admin/citas', {notes});
 }
 
