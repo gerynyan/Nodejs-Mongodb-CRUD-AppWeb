@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const moment = require('moment');
+const $ = require('jquery');
 
 //Inicializaciones.
 const app = express();
@@ -68,5 +69,32 @@ app.use(require('./routes/admin.routes'));
 
 //Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public'))); //permite el uso de los archivos en esta dirección.
+
+//obtiene horas
+app.post('/getAvailableTimes', (req, res) => {
+    const selectedDate = moment(req.body.date).format('YYYY-MM-DD');
+    Note.find({ date: selectedDate })
+      .select('time')
+      .sort('time')
+      .exec((err, notes) => {
+        if (err) {
+          console.log(err);
+          res.status(500).send('Error retrieving notes');
+        } else {
+          const unavailableTimes = notes.map(note => note.time);
+          const availableTimes = [];
+          let currentTime = moment('10:00', 'HH:mm');
+          const endTime = moment('15:00', 'HH:mm');
+          while (currentTime.isBefore(endTime)) {
+            const timeString = currentTime.format('HH:mm');
+            if (!unavailableTimes.includes(timeString)) {
+              availableTimes.push(timeString);
+            }
+            currentTime = currentTime.add(30, 'minutes');
+          }
+          res.send(availableTimes);
+        }
+      });
+  });
  
 module.exports = app;//exporta el módulo

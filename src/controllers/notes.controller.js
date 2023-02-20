@@ -1,6 +1,9 @@
 const notesCtrl = {};
 const Note = require('../models/Note');
 const User = require('../models/User');  
+const moment = require('moment');
+const $ = require('jquery');
+
 
 //controlador para renderizar vistas y procesar peticones.
 
@@ -11,7 +14,7 @@ notesCtrl.renderNoteform = async (req, res) => {
 
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
-    const {title, description, fecha, idEntrenador} = req.body;
+    const {title, description, fecha, hora, idEntrenador} = req.body;
     const newFecha = moment(fecha, 'DD-MM-YYYY HH:mm').toDate();
     const newNote = new Note({title, description, fecha: newFecha, idEntrenador});
     newNote.idCliente = req.user.id;   
@@ -53,5 +56,8 @@ notesCtrl.deleteNote = async (req, res) => {
     req.flash('success_msg', 'Nota eliminada con éxito');
     res.redirect('/notes')
 };
+
+
+//AJUSTE HORAS
 
 module.exports = notesCtrl;
