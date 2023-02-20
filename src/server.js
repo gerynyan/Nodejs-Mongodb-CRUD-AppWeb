@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
+const moment = require('moment');
 
 //Inicializaciones.
 const app = express();
@@ -28,6 +29,9 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
             }else{
                 return false
             }
+        },
+        moment: function(date, format){
+            return moment(date).format(format);
         }
     }
 

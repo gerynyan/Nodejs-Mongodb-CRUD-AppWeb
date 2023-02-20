@@ -12,7 +12,8 @@ notesCtrl.renderNoteform = async (req, res) => {
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description, fecha, idEntrenador} = req.body;
-    const newNote = new Note({title, description, fecha, idEntrenador});
+    const newFecha = moment(fecha, 'DD-MM-YYYY HH:mm').toDate();
+    const newNote = new Note({title, description, fecha: newFecha, idEntrenador});
     newNote.idCliente = req.user.id;   
     await newNote.save();
     // mensaje

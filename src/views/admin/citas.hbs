@@ -9,7 +9,7 @@
                     <p>Cliente: {{this.cliente}}</p>
                     <p>Entrenador: {{this.entrenador}}</p>
                     <p>Detalles: {{description}}</p>
-                    <p>Fecha: {{fecha}}</p>
+                    <p>Fecha: {{moment fecha 'DD-MM-YYYY HH:mm'}}</p>
                     <form action="/notes/delete/{{_id}}?_method=DELETE" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger btn-block btn-sm">BORRAR</button>
