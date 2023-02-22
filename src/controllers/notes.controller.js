@@ -78,7 +78,7 @@ notesCtrl.updateNote = async (req, res) => {
     res.redirect('/notes')
 };
 
-//Método para borrar la nota y recargar la ventana
+// Método para borrar la nota y recargar la ventana
 notesCtrl.deleteNote = async (req, res) => {
     await Note.findByIdAndDelete(req.params.id);
     req.flash('success_msg', 'Nota eliminada con éxito');
