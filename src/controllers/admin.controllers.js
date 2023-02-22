@@ -39,13 +39,12 @@ adminCtrl.renderCitas = async (req, res) =>{
         const notes = await Note.find({idEntrenador: req.user._id}).exec();
 
         const notesNombres = await Promise.all(notes.map(async (nota) => {
-            const[cliente, entrenador] = await Promise.all([
-                User.findById(nota.idCliente),
-                User.findById(nota.idEntrenador),
+            const[cliente] = await Promise.all([
+                User.findById(nota.idCliente)
             ]);
 
-            if (!cliente || !entrenador){
-                console.log('Cliente o Entrenador no encontrados: ${note._id');
+            if (!cliente){
+                console.log('Cliente o Entrenador no encontrados: ${note._id}');
                 return null;
             }
 
@@ -55,7 +54,6 @@ adminCtrl.renderCitas = async (req, res) =>{
                 fecha: nota.fecha,
                 description: nota.description,
                 cliente: cliente.name,
-                entrenador: entrenador.name,
             };
         }))
         res.render('admin/citas', {notes: notesNombres,});

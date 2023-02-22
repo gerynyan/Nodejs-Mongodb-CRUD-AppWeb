@@ -2,6 +2,8 @@ const notesCtrl = {};
 const Note = require('../models/Note');
 const User = require('../models/User');  
 const moment = require('moment');
+const mongoose = require('mongoose');
+
 const $ = require('jquery');
 
 
@@ -26,8 +28,34 @@ notesCtrl.createNewNote = async (req, res) => {
 
 //Muestra todas las notas del usuario
 notesCtrl.renderNotes = async (req, res) => {
-    const notes = await Note.find({idCliente: req.user.id}).lean();
-    res.render('notes/all-notes', {notes});
+    // const notes = await Note.find({idCliente: req.user.id}).lean();
+    // res.render('notes/all-notes', {notes});
+
+    try{
+        const notes = await Note.find({idCliente: req.user.id}).exec();
+
+        const notesNombres = await Promise.all(notes.map(async (nota) => {
+            const[entrenador] = await Promise.all([
+                User.findById(nota.idEntrenador)
+            ]);
+            if(!entrenador){
+                console.log('Entrenador no encontrado: ${note._id}');
+                return null;
+            }
+
+            return{
+                _id: nota._id,
+                title: nota.title,
+                fecha: nota.fecha,
+                description: nota.description,
+                entrenador: entrenador.name
+            };
+        }))
+        res.render('notes/all-notes', {notes: notesNombres});
+    }catch(error){
+        console.error(error);
+        res.status(500).send('server error');
+    }
 };
 
 //Renderiza formulario para editar Notas
