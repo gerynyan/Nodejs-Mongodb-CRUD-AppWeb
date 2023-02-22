@@ -2,26 +2,26 @@
     <div class="col-md-4 mx-auto">
         <div class="card">
             <div class="card-header">
-                Registro de Cuenta
+                <h4 class="card-title">Registro de Cuenta</h4>
             </div>
             <div class="card-body">
-                <form action="/users/signup" method="POST">
-                    <div class="form-group">
+                <form>
+                    <div class="mb-3">
                         <input type="text" class="form-control" name="name" placeholder="Nombre" value="{{name}}">
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="surname" placeholder="Apellidos" value="{{surname}}">
+                    <div class="mb-3">
+                    <input type="text" class="form-control" name="surname" placeholder="Apellidos" value="{{surname}}">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <input type="email" class="form-control" name="email" placeholder="Email" value="{{email}}">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <input type="password" class="form-control" name="password" placeholder="Contraseña" value="{{password}}">
                     </div>
-                    <div class="form-group">
+                    <div class="mb-3">
                         <input type="password" class="form-control" name="confirm_password" placeholder="Confirmar Contraseña" value="{{confirm_password}}">
                     </div>
-                    <button class="btn btn-primary btn-block">Registrarse</button>
+                        <button class="btn btn-primary btn-block">REGISTRARSE</button>
                 </form>
             </div>
         </div>
