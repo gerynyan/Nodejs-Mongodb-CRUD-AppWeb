@@ -28,11 +28,8 @@ notesCtrl.createNewNote = async (req, res) => {
 
 //Muestra todas las notas del usuario
 notesCtrl.renderNotes = async (req, res) => {
-    // const notes = await Note.find({idCliente: req.user.id}).lean();
-    // res.render('notes/all-notes', {notes});
-
     try{
-        const notes = await Note.find({idCliente: req.user.id}).exec();
+        const notes = await Note.find({idCliente: req.user.id}).sort({fecha: 1}).exec();
 
         const notesNombres = await Promise.all(notes.map(async (nota) => {
             const[entrenador] = await Promise.all([
@@ -50,7 +47,7 @@ notesCtrl.renderNotes = async (req, res) => {
                 description: nota.description,
                 entrenador: entrenador.name
             };
-        }))
+        }));
         res.render('notes/all-notes', {notes: notesNombres});
     }catch(error){
         console.error(error);

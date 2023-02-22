@@ -36,7 +36,7 @@ adminCtrl.deleteUser = async (req, res) => {
 //Renderiza citas
 adminCtrl.renderCitas = async (req, res) =>{
     try{
-        const notes = await Note.find({idEntrenador: req.user._id}).exec();
+        const notes = await Note.find({idEntrenador: req.user._id}).sort({fecha: 1}).exec();
 
         const notesNombres = await Promise.all(notes.map(async (nota) => {
             const[cliente] = await Promise.all([
