@@ -14,40 +14,40 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/about">Sobre</a>
                 </li>
-                {{!-- SOLO ADMINISTRADORES --}}
-                {{!-- {{#if (eq permisos  0)}} --}}
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/permisos">Permisos</a>
-                </li>                    
-                <li class="nav-item">
-                    <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
-                </li>
-                {{!-- {{/if}} --}}
             </ul>
             <ul class="navbar-nav ml-auto">
-                <!-- SOLO VISIBLE SI IDENTIFICADO -->
-                {{#if user}}
-
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Notas
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="/notes">Todas las Notas</a></li>
-                            <li><a class="dropdown-item" href="/notes/add">Agregar nueva Nota</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/users/logout">Cerrar sesión</a></li>
-                        </ul>
-                    </li>
-                {{else}}
-                <!-- SI NO ESTA IDENTIFICADO -->
-                    <li class="nav-item">
-                        <a href="/users/signin" class="nav-link">Acceso</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/users/signup" class="nav-link">Registrarse</a>
-                    </li>
-                {{/if}}
+                    <!-- SOLO VISIBLE SI IDENTIFICADO -->
+                    {{#if user}}
+                        {{#if (eq user.permisos 0)}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin/permisos">Permisos</a>
+                        </li>
+                        {{/if}}
+                        {{#if (eq user.permisos 1)}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
+                        </li>
+                        {{/if}}
+                        <li class="nav-item dropdown">
+                            <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Notas
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                                <li><a class="dropdown-item" href="/notes">Todas las Notas</a></li>
+                                <li><a class="dropdown-item" href="/notes/add">Agregar nueva Nota</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="/users/logout">Cerrar sesión</a></li>
+                            </ul>
+                        </li>
+                    {{else}}
+                    <!-- SI NO ESTA IDENTIFICADO -->
+                        <li class="nav-item">
+                            <a href="/users/signin" class="nav-link">Acceso</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/users/signup" class="nav-link">Registrarse</a>
+                        </li>
+                    {{/if}}
             </ul>
         </div>
     </div>
