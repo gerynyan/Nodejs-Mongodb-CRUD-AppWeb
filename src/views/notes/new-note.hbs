@@ -1,18 +1,19 @@
+
 <div class="col-md-4 mx-auto">
     <div class="card text-center">
         <div class="card-header">
-            <h3>Nueva Nota</h3>    
+            <h3>Nueva Cita</h3>    
         </div>
         <div class="card-body">
             <form action="/notes/new-note" method="POST">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <input name="title" type="text" class="form-control" placeholder="Título" autofocus>     
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <textarea name="description" placeholder="Descripción" class="form-control"></textarea>
                 </div> 
                 <div>
-                    <select class="form-control" name="idEntrenador" aria-label="Default select example">
+                    <select class="form-control mb-3" name="idEntrenador" aria-label="Default select example">
                         <option selected>Seleccione Entrenador</option>
                         <!-- repite por cada carta -->
                         {{#each users}} 
@@ -23,60 +24,26 @@
                     </select>
                 </div>
                 <p></p>
-                <div class="form-group">
-                    <script>
-                        $(function() {
-                        $('#datetimepicker').datetimepicker();
-                        });
-                    </script>
-                    <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-                        <input type="date" class="form-control datetimepicker-input" data-target="#datetimepicker" name="fecha" id="datetimepicker" ></input>
-
-                        <select class="form-control" name="fecha" id="HoraPicker" data-target-input="nearest" aria-label="Default select example">
-                            <option selected>Seleccione Hora</option>
-                            {{!-- <option value="10:00" type="date">10:00</option>
-                            <option value="10:30" type="date">10:30</option>
-                            <option value="11:00" type="date">11:00</option>
-                            <option value="11:30" type="date">11:30</option>
-                            <option value="12:00" type="date">12:00</option>
-                            <option value="12:30" type="date">12:30</option>
-                            <option value="13:00" type="date">13:00</option>
-                            <option value="13:30" type="date">13:30</option>
-                            <option value="14:00" type="date">14:00</option>
-                            <option value="14:30" type="date">14:30</option>
-                            <option value="15:00" type="date">15:00</option> --}}
-                        </select>
-                    </div>
-                    <script>
-                        $(function(){
-                            $('#datetimepicker').on('change', function(){
-                                const selectedDate = $(this).val();
-                                $.ajax({
-                                    url: '/getAvailableTimes',
-                                    type: 'POST',
-                                    data:{date: selectedDate},
-                                    success: function(getAvailableTimes){
-                                        const $timeInput = $('#HoraPicker');
-                                        $timeInput.empty();
-                                        $timeInput.append($('<option>',{
-                                            value: '',
-                                            text: 'Select a time'
-                                        }));
-                                        aviableTime.forEach(function(time){
-                                            $timeInput.append($('<option>', {
-                                                value: time,
-                                                text: time
-                                            }));
-                                        });
-                                    },
-                                    error: function(error){
-                                        console.log(error);
-                                    }
-                                });
-                            });
-                        });
-                    </script>
-                </div> 
+                <div class="form-group mb-3">
+                            <label for="fecha">Fecha:</label>
+                            <input type="date" class="form-control" name="fecha" id="fecha">
+                </div>
+                <div class="form-group mb-3">
+                    <label for="hora">Hora:</label>
+                    <select class="form-control" name="hora" id="hora">
+                        <option selected disabled>Seleccione Hora</option>
+                        <option value="09:00">09:00</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                    </select>                   
+                </div>
                 <div class="form-group">
                     <button class="btn btn-primary btn-block">
                         CREAR
@@ -86,16 +53,3 @@
         </div>
     </div>
 </div>
-
-{{!--tratamiento de la fecha y hora para --}}
-<script type="text/javascript">
-
-    $(function(){
-        $('#dateselect').datetimepicker({
-            inline: true,
-            sideBySide: true,
-            locale: 'es',
-            format: 'yyyy-mm-dd hh:ii'
-        });
-    });
-</script>

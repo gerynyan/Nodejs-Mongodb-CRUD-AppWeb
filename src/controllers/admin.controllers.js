@@ -66,7 +66,8 @@ adminCtrl.renderCitas = async (req, res) =>{
 adminCtrl.renderCitasDia = async (req, res) => {
     try{
         const today = moment().startOf('day');
-        const notes = await Note.find({idEntrenador: req.user._id, fecha: today}).sort({fecha: 1}).exec();
+        const tomorrow = moment(today).add(1, 'day');
+        const notes = await Note.find({idEntrenador: req.user._id, fecha: {$gte: today, $lt: tomorrow}}).sort({fecha: 1}).exec();
 
         const notesNombres = await Promise.all(notes.map(async (nota) => {
             const[cliente] = await Promise.all([
