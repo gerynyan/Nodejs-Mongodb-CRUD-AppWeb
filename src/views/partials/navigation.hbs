@@ -21,8 +21,11 @@
                         <li id="ocAdmin" class="nav-item" data-perms="{{perms}}">
                             <a class="nav-link" href="/admin/permisos">Permisos</a>
                         </li>
-                        <li id="ocEntrenador" class="nav-item" data-perms="{{perms}}">
+                        <li id="ocCitas" class="nav-item">
                             <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
+                        </li>
+                        <li id="ocCitasHoy" class="nav-item" >
+                            <a class="nav-link" href="/entrenador/citas-dia">"Citas del Día"</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,9 +62,14 @@
     }
 
     if (perms === '1') {
-        ocEntrenador.classList.remove('hidden'); 
+        ocCitas.classList.remove('hidden'); 
     } else {
-        ocEntrenador.classList.add('hidden'); 
+        ocCitas.classList.add('hidden'); 
+    }     
+    if (perms === '1') {
+        ocCitasHoy.classList.remove('hidden'); 
+    } else {
+        ocCitasHoy.classList.add('hidden'); 
     }     
 
 </script>
