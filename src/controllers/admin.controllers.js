@@ -15,6 +15,12 @@ adminCtrl.renderEditUserForm = async (req, res) => {
     console.log('EditUserForm: '+user);
     res.render('admin/edit-usuario', {user});
 };
+//renderiza preferencias entrenador
+adminCtrl.renderEntrenadorPref = async (req, res) => {
+    const user = await User.findById(req.params.id).lean();
+    console.log('EditUserForm: '+user);
+    res.render('admin/entrenadorPref', {user});
+};
 
 //Manda la petición de edición y devuelve a /permisos
 adminCtrl.updateUser = async (req, res) => {
@@ -24,6 +30,16 @@ adminCtrl.updateUser = async (req, res) => {
     // mensaje
     req.flash('success_msg', 'Usuario editado correctamente');
     res.redirect('/admin/permisos')
+};
+
+//Manda la petición de edición y devuelve a /permisos
+adminCtrl.updateEntrenador = async (req, res) => {
+    const {name, email,horas } = req.body;
+    console.log('Update user' +name, email, horas)
+    await User.findByIdAndUpdate(req.params.id, {name, email, horas})
+    // mensaje
+    req.flash('success_msg', 'Preferencias editadas correctamente');
+    res.redirect('/entrenador/preferencias')
 };
 
 //Método para borrar usuario y recargar la ventana

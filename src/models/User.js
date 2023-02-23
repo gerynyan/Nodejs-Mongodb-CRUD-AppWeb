@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     permisos: {type: Number, required: true},
+    horas: {type: [String], required: false}
 }, {timestamps: true})
 
 //Función para encriptar la contraseña al registro

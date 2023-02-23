@@ -25,7 +25,10 @@
                             <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
                         </li>
                         <li id="ocCitasHoy" class="nav-item" >
-                            <a class="nav-link" href="/entrenador/citas-dia">"Citas del Día"</a>
+                            <a class="nav-link" href="/entrenador/citas-dia">"Citas de Hoy"</a>
+                        </li>
+                        <li id="ocPreferencias" class="nav-item" >
+                            <a class="nav-link" href="/entrenador/preferencias">"Citas de Hoy"</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -70,6 +73,11 @@
         ocCitasHoy.classList.remove('hidden'); 
     } else {
         ocCitasHoy.classList.add('hidden'); 
+    }     
+    if (perms === '1') {
+        ocPreferencias.classList.remove('hidden'); 
+    } else {
+        ocPreferencias.classList.add('hidden'); 
     }     
 
 </script>

@@ -2,7 +2,7 @@ const {Router} = require('express');
 const router = Router();
 
 //importo los métodos de la carpeta controladores
-const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia } = require('../controllers/admin.controllers');
+const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia, renderEntrenadorPref,updateEntrenador } = require('../controllers/admin.controllers');
 
 //Requiero que el usuario este identificado
 const {isAdmin, isEntrenador} = require('../helpers/auth')
@@ -21,6 +21,9 @@ router.put('/admin/permisos/edit-usuario/:id', isAdmin, updateUser)
 //ELIMINAR USUARIO
 router.delete('/admin/permisos/delete/:id', isAdmin, deleteUser)
 
+//edita entrenador
+router.get('/entrenador/preferencias/:id', isEntrenador, renderEntrenadorPref)
+router.put('/entrenador/preferencias/:id', isEntrenador, updateEntrenador)
 
 
 module.exports = router;
