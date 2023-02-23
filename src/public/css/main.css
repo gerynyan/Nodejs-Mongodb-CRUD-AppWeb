@@ -6,3 +6,6 @@ body{
     border: none;
     width: 60%;
 }
+.hidden {
+    display: none;
+  }
