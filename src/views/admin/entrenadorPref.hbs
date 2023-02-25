@@ -9,13 +9,14 @@
                 <div class="form-group">
                     <input type="text" name="name" class="form-control mb-3" value="{{user.name}}">
                 </div>
+                <p></p>
                 <div class="form-group">
                     <textarea name="email" class="form-control mb-3">{{user.email}}</textarea>
                 </div>
-                <p>Seleccione las horas en las que esté disponible:</p>
+                <p>Seleccione las horas en las que esté disponible, (Las citas creadas antes de este cambio seguirán existiendo):</p>
                 {{#each allHours}}
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="{{this}}" names="horas[]" value="{{this}}" {{#if isHourSelected ../user.horas this}}checked{{/if}} >{{this}}
+                    <input class="form-check-input" type="checkbox" id="{{this}}" name="horasCheck" value="{{this}}" {{#if (contains ../user.horas this)}}checked{{/if}}> {{this}}
                 </div>
                 {{/each}}
                 <div class="form-group">

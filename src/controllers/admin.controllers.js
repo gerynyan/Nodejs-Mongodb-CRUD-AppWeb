@@ -37,9 +37,9 @@ adminCtrl.updateUser = async (req, res) => {
 
 //Manda la petición de edición y devuelve a /permisos
 adminCtrl.updateEntrenador = async (req, res) => {
-    const {name, email,horas} = req.body;
-    console.log('Update user' +name, email, horas)
-    await User.findByIdAndUpdate(req.params.id, {name, email, horas})
+    const {name, email,horasCheck} = req.body;
+    console.log('Update user' +name, email, horasCheck)
+    await User.findByIdAndUpdate(req.params.id, {name, email, horas: horasCheck})
     // mensaje
     req.flash('success_msg', 'Preferencias editadas correctamente');
     res.redirect('/entrenador/preferencias')

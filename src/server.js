@@ -8,6 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 const moment = require('moment');
 const $ = require('jquery');
+const Handlebars = require('handlebars');
+
 
 //Inicializaciones.
 const app = express();
@@ -34,17 +36,24 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
         moment: function(date, format){
             return moment(date).format(format);
         },
-        HoraSeleccionada: function(horaUsuario, hora){
-          if(horaUsuario && horaUsuario.includes(hora)){
-            return true;
-          }else{
-            return false;
-          }
-        },
+        // contains: function(array, value, option){
+        //   if(array && array.indexOf(value) !== -1){
+        //     return option.fn(this);
+        //   }
+        //   return option.inverse(this);
+        // },
     }
 
 }))
 app.set('view engine', 'hbs');//Utiliza el motor anterior.
+
+Handlebars.registerHelper('contains', function(array, value) {
+  if (array && array.includes(value)) {
+    return true;
+  } else {
+    return false;
+  }
+});
 
 //Middleware.
 app.use(express.urlencoded({extended: false}));//Convierte datos de formulario en Json.
