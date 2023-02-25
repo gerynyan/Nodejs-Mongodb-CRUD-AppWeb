@@ -3,6 +3,9 @@ const User = require('../models/User');
 const Note = require('../models/Note');
 const mongoose = require('mongoose');
 const moment = require('moment');
+
+const allHours = ["10:00", "10:30", "11:00", "11:30", "12:00", "12:30"];
+
 //Renderiza permisos
 adminCtrl.renderPermisos = async (req, res) =>{
     const user = await User.find({user: req.user}).lean();
@@ -12,14 +15,14 @@ adminCtrl.renderPermisos = async (req, res) =>{
 //Renderiza formulario para editar Usuarios
 adminCtrl.renderEditUserForm = async (req, res) => {
     const user = await User.findById(req.params.id).lean();
-    console.log('EditUserForm: '+user);
+    console.debug('EditUserForm: '+user);
     res.render('admin/edit-usuario', {user});
 };
 //renderiza preferencias entrenador
 adminCtrl.renderEntrenadorPref = async (req, res) => {
-    const user = await User.findById(req.params.id).lean();
-    console.log('EditUserForm: '+user);
-    res.render('admin/entrenadorPref', {user});
+    const user = await User.findById(req.user.id).lean();
+    console.debug('EditUserForm: '+ user);
+    res.render('admin/entrenadorPref', {user, allHours});
 };
 
 //Manda la petición de edición y devuelve a /permisos
@@ -34,7 +37,7 @@ adminCtrl.updateUser = async (req, res) => {
 
 //Manda la petición de edición y devuelve a /permisos
 adminCtrl.updateEntrenador = async (req, res) => {
-    const {name, email,horas } = req.body;
+    const {name, email,horas} = req.body;
     console.log('Update user' +name, email, horas)
     await User.findByIdAndUpdate(req.params.id, {name, email, horas})
     // mensaje

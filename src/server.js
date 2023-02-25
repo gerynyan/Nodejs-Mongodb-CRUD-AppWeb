@@ -33,7 +33,14 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
         },
         moment: function(date, format){
             return moment(date).format(format);
-        }
+        },
+        HoraSeleccionada: function(horaUsuario, hora){
+          if(horaUsuario && horaUsuario.includes(hora)){
+            return true;
+          }else{
+            return false;
+          }
+        },
     }
 
 }))

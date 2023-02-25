@@ -22,7 +22,7 @@ router.put('/admin/permisos/edit-usuario/:id', isAdmin, updateUser)
 router.delete('/admin/permisos/delete/:id', isAdmin, deleteUser)
 
 //edita entrenador
-router.get('/entrenador/preferencias/:id', isEntrenador, renderEntrenadorPref)
+router.get('/entrenador/preferencias', isEntrenador, renderEntrenadorPref)
 router.put('/entrenador/preferencias/:id', isEntrenador, updateEntrenador)
 
 
