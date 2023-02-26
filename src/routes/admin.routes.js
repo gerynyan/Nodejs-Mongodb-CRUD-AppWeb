@@ -7,28 +7,29 @@ const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas,
 //Requiero que el usuario este identificado
 const {isAdmin, isEntrenador} = require('../helpers/auth')
 
-//RENDERIZA USUARIOS
-router.get('/admin/permisos', isAdmin, renderPermisos );
+//ADMIN
+    //Renderiza usuarios
+    router.get('/admin/permisos', isAdmin, renderPermisos );
 
-//RENDERIZA CITAS
-router.get('/entrenador/citas', isEntrenador, renderCitas );
-router.get('/entrenador/citas-dia', isEntrenador, renderCitasDia);
+    //Editar usuario
+    router.get('/admin/permisos/edit-usuario/:id', isAdmin, renderEditUserForm)
+    router.put('/admin/permisos/edit-usuario/:id', isAdmin, updateUser)
 
-//Elimina notas
-router.delete('/entrenador/citas/delete/:id', isEntrenador, deletecitasTodas);
-router.delete('/entrenador/citas-dia/delete/:id', isEntrenador, deletecitasDia);
+    //Eliminar usuario
+    router.delete('/admin/permisos/delete/:id', isAdmin, deleteUser);
 
+//ENTRENADOR
+    //Preferencias
+    router.get('/entrenador/preferencias', isEntrenador, renderEntrenadorPref)
+    router.put('/entrenador/preferencias/:id', isEntrenador, updateEntrenador)
 
-//Editar usuario
-router.get('/admin/permisos/edit-usuario/:id', isAdmin, renderEditUserForm)
-router.put('/admin/permisos/edit-usuario/:id', isAdmin, updateUser)
+    //Renderiza citas
+    router.get('/entrenador/citas', isEntrenador, renderCitas );
+    router.get('/entrenador/citas-dia', isEntrenador, renderCitasDia);
 
-//ELIMINAR USUARIO
-router.delete('/admin/permisos/delete/:id', isAdmin, deleteUser)
-
-//edita entrenador
-router.get('/entrenador/preferencias', isEntrenador, renderEntrenadorPref)
-router.put('/entrenador/preferencias/:id', isEntrenador, updateEntrenador)
+    //Elimina citas
+    router.delete('/entrenador/citas/delete/:id', isEntrenador, deletecitasTodas);
+    router.delete('/entrenador/citas-dia/delete/:id', isEntrenador, deletecitasDia);
 
 
 module.exports = router;

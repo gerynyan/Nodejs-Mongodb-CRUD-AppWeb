@@ -8,30 +8,29 @@ helpers.isLoggedIn = (req, res, next) => {
         return next();
     }
     req.flash('error_msg', 'No está autorizado')
-    res.redirect('/users/signin');
+    res.redirect('/');
 }
 
 //Verifica si el usuario es administrador
 helpers.isAdmin = (req, res, next) => {
     if (req.isAuthenticated()){
-        if(res.locals.user.permisos == 0){
+        if(res.locals.user.permisos === 0){
             return next();
         }
     }
     req.flash('error_msg', 'No está autorizado')
-    res.redirect('/notes');
+    res.redirect('/');
 }
 
-//Verifica si el usuario es administrador
+//Verifica si el usuario es entrenador
 helpers.isEntrenador = (req, res, next) => {
     if (req.isAuthenticated()){
         if(res.locals.user.permisos === 1){
-            console.log('Is Entrenador: '+res.locals.user.permisos);
             return next();
         }
     }
     req.flash('error_msg', 'No está autorizado')
-    res.redirect('/notes');
+    res.redirect('/');
 }
 
 module.exports = helpers;
