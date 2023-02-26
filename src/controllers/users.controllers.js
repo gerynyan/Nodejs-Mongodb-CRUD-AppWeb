@@ -77,6 +77,14 @@ usersCtrl.signin = function(req, res, next){
     })(req, res, next);
 };
 
+// Verifica si el acceso ha tenido éxito ANTERIOR
+// usersCtrl.signin = passport.authenticate('local',  {
+//     failureRedirect: '/users/signin',
+//     successRedirect: '/notes',
+//     failureFlash: true
+// })
+
+
 //Para cerrar sesión
 usersCtrl.logout = (req, res) => {
     req.logout(function(err){ // antes req.logout() deprecado para evitar "session fixation attacks."
