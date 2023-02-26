@@ -21,29 +21,20 @@
                             <option value="{{_id}}"> {{name}}</option>
                             {{/if}}
                         {{/each}}
+
                     </select>
-                </div>
-                <p></p>
+                </div>          
                 <div class="form-group mb-3">
-                            <label for="fecha">Fecha:</label>
-                            <input type="date" class="form-control" name="fecha" id="fecha">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha">
                 </div>
                 <div class="form-group mb-3">
                     <label for="hora">Hora:</label>
                     <select class="form-control" name="hora" id="hora">
                         <option selected disabled>Seleccione Hora</option>
-                        <option value="09:00">09:00</option>
-                        <option value="10:00">10:00</option>
-                        <option value="11:00">11:00</option>
-                        <option value="12:00">12:00</option>
-                        <option value="13:00">13:00</option>
-                        <option value="14:00">14:00</option>
-                        <option value="15:00">15:00</option>
-                        <option value="16:00">16:00</option>
-                        <option value="17:00">17:00</option>
-                        <option value="18:00">18:00</option>
+
                     </select>                   
-                </div>
+                </div>   
                 <div class="form-group">
                     <button class="btn btn-primary btn-block">
                         CREAR
@@ -53,3 +44,29 @@
         </div>
     </div>
 </div>
+
+<script>
+  document.querySelector('[name="idEntrenador"]').addEventListener('change', async (event) => {
+    const selectedUserId = event.target.value;
+    const horasSelect = document.querySelector('[name="hora"]');
+
+    try {
+      const response = await fetch(`/users/horas/${selectedUserId}`);
+      const selectedUser = await response.json();
+      const HorasUsuario = selectedUser.horas;
+
+      // Clear the previous options in the "hora" select
+      horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
+
+      // Add new options based on the selected user's "Horas" array
+      HorasUsuario.forEach(hora => {
+        const option = document.createElement('option');
+        option.value = hora;
+        option.text = hora;
+        horasSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  });
+</script>

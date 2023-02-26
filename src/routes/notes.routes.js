@@ -4,6 +4,7 @@ const router = Router();
 //importo los métodos de la carpeta controladores
 const {
     renderNoteform, 
+    usersCall,
     createNewNote, 
     renderNotes, 
     renderEditForm, 
@@ -16,8 +17,9 @@ const {isLoggedIn} = require('../helpers/auth')
 
 //NUEVA NOTA, siempre requiero que esté identificado
 router.get('/notes/add', isLoggedIn, renderNoteform );
-
 router.post('/notes/new-note', isLoggedIn, createNewNote );
+router.get('/users/horas/:userid', isLoggedIn, usersCall);
+
 
 //TODAS LAS NOTAS
 router.get('/notes', isLoggedIn, renderNotes )

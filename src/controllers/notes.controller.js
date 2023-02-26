@@ -14,6 +14,20 @@ notesCtrl.renderNoteform = async (req, res) => {
     res.render('notes/new-note', {users});
 };
 
+notesCtrl.usersCall = async (req, res) => {
+    try {
+      const user = await User.findById(req.params.userid).lean();
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+      const horas = user.horas || [];
+      res.json({ horas });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+};
+
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description, fecha, hora, idEntrenador} = req.body;
