@@ -113,6 +113,16 @@ adminCtrl.renderCitasDia = async (req, res) => {
     }
 };
 
+adminCtrl.deletecitasTodas = async (req, res) => {
+    await Note.findByIdAndDelete(req.params.id);
+    req.flash('success_msg', 'Nota eliminada con éxito');
+    res.redirect('/entrenador/citas')
+};
 
+adminCtrl.deletecitasDia = async (req, res) => {
+    await Note.findByIdAndDelete(req.params.id);
+    req.flash('success_msg', 'Nota eliminada con éxito');
+    res.redirect('/entrenador/citas-dia')
+};
 
 module.exports = adminCtrl;

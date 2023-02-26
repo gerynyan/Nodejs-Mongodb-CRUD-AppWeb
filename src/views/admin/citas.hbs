@@ -9,7 +9,7 @@
                     </h5>
                     <p>Cliente: {{this.cliente}}</p>
                     <p>Detalles: {{description}}</p>
-                    <form id="delete-form-{{_id}}" action="/notes/delete/{{_id}}?_method=DELETE" method="POST">
+                    <form id="delete-form-{{_id}}" action="/entrenador/citas/delete/{{_id}}?_method=DELETE" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger btn-block btn-sm">BORRAR</button>
                     </form>
