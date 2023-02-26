@@ -52,11 +52,30 @@ usersCtrl.renderSignInForm = (req, res) => {
     res.render('users/signin');
 }
 // Verifica si el acceso ha tenido éxito
-usersCtrl.signin = passport.authenticate('local',  {
-    failureRedirect: '/users/signin',
-    successRedirect: '/notes',
-    failureFlash: true
-})
+usersCtrl.signin = function(req, res, next){ 
+    passport.authenticate('local', function(err, user, info) {
+        if (err) { return next(err); }
+        if (!user) { return req.flash('error_msg', 'Correo o contraseña incorectos.') && res.redirect('/users/signin'); }
+
+        req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            var permisos = user.permisos;
+            switch (permisos) {
+              case 0:
+                res.redirect('/admin/permisos');
+                break;
+              case 1:
+                res.redirect('/entrenador/citas-dia');
+                break;
+              case 2:
+                res.redirect('/notes');
+                break;
+              default:
+                res.redirect('/');
+            }
+        });
+    })(req, res, next);
+};
 
 //Para cerrar sesión
 usersCtrl.logout = (req, res) => {
