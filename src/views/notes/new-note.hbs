@@ -46,16 +46,21 @@
 </div>
 
 <script>
-  document.querySelector('[name="idEntrenador"]').addEventListener('change', async (event) => {
-    const selectedUserId = event.target.value;
+async function updateHorasSelect() {
+    //guarda los valores
+    const selectedUserId = document.querySelector('[name="idEntrenador"]').value;    
+    const diaSelect = document.querySelector('[name="fecha"]').value;
     const horasSelect = document.querySelector('[name="hora"]');
+        console.log(selectedUserId);
+        console.log(diaSelect);
 
     try {
-      const response = await fetch(`/users/horas/${selectedUserId}`);
+        //busca en la base de datos
+      const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}`);
       const selectedUser = await response.json();
       const HorasUsuario = selectedUser.horas;
 
-      // Clear the previous options in the "hora" select
+      // limpia las opciones previas
       horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
 
       // Add new options based on the selected user's "Horas" array
@@ -68,5 +73,10 @@
     } catch (error) {
       console.error(error);
     }
-  });
+  };
+
+document.querySelector('[name="idEntrenador"]').addEventListener('change', updateHorasSelect);
+document.querySelector('[name="fecha"]').addEventListener('change', updateHorasSelect);
+
+ 
 </script>
