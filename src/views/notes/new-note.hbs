@@ -14,7 +14,7 @@
                 </div> 
                 <div>
                     <select class="form-control mb-3" name="idEntrenador" aria-label="Default select example">
-                        <option selected>Seleccione Entrenador</option>
+                        <option selected value="">Seleccione Entrenador</option>
                         <!-- repite por cada carta -->
                         {{#each users}} 
                             {{#if (eq permisos  1)}}
@@ -47,32 +47,38 @@
 
 <script>
 async function updateHorasSelect() {
-    //guarda los valores
+    //guarda los valores de campos
     const selectedUserId = document.querySelector('[name="idEntrenador"]').value;    
     const diaSelect = document.querySelector('[name="fecha"]').value;
     const horasSelect = document.querySelector('[name="hora"]');
-        console.log(selectedUserId);
-        console.log(diaSelect);
 
-    try {
+    //El script solo se ejecuta si campos ID y FECHA != null
+    if(!selectedUserId || !diaSelect){
+    }else{
+    console.log('empieza el script')
+    console.log('Id Entrenador: ' +selectedUserId);
+    console.log('Día seleccionado' +diaSelect);
+        try {
         //busca en la base de datos
-      const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}`);
-      const selectedUser = await response.json();
-      const HorasUsuario = selectedUser.horas;
+        const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}`);
+        const selectedUser = await response.json();
+        const HorasUsuario = selectedUser.horas;
 
-      // limpia las opciones previas
-      horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
+        // limpia las opciones previas
+        horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
 
-      // Add new options based on the selected user's "Horas" array
-      HorasUsuario.forEach(hora => {
-        const option = document.createElement('option');
-        option.value = hora;
-        option.text = hora;
-        horasSelect.appendChild(option);
-      });
-    } catch (error) {
-      console.error(error);
+        // Add new options based on the selected user's "Horas" array
+        HorasUsuario.forEach(hora => {
+            const option = document.createElement('option');
+            option.value = hora;
+            option.text = hora;
+            horasSelect.appendChild(option);
+        });
+        } catch (error) {
+        console.error(error);
+        }
     }
+
   };
 
 document.querySelector('[name="idEntrenador"]').addEventListener('change', updateHorasSelect);

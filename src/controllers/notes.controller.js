@@ -15,23 +15,36 @@ notesCtrl.renderNoteform = async (req, res) => {
 };
 
 notesCtrl.usersCall = async (req, res) => {
-    const idEntrenador = req.query.userid;
-    const fecha = req.query.date;
+    const id = req.params.id;
+    const dia = req.params.dia;
+    const diaInicio = moment(dia).startOf('day');
+    const diaFin = moment(dia).endOf('day');
+    // const diaForm = moment(dia).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     console.log('usersCall funciona');
-    console.log(idEntrenador);
-    console.log(fecha)  
+
     try {
-      const user = await User.findById(idEntrenador).lean();
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-      const horas = user.horas || [];
-      res.json({ horas });
+        console.log('el try arranca')
+        const user = await User.findById(id).lean();
+        const horas = user.horas;
+
+        console.log('horas: '+horas);
+        console.log(dia);
+        const notes = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
+        console.debug('notes: '+notes);
+        const horasOcupadas = notes.map((note) => moment(note.fecha).format('HH:mm'));
+        console.debug('Fechas ocupadas: '+horasOcupadas)
+        const horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
+        console.debug('Horas libres: '+ horasLibres);
+
+        res.json({ horas: horasLibres });
     } catch (err) {
       console.error(err);
       res.status(500).json({ message: 'Server error' });
     }
 };
+
+
+
 notesCtrl.horasCall = async (req, res) => {
     const { fecha, idEntrenador } = req.query;
     console.log('horasCall funciona')
