@@ -5,6 +5,7 @@ const router = Router();
 const {
     renderNoteform, 
     usersCall,
+    horasCall,
     createNewNote, 
     renderNotes, 
     renderEditForm, 
@@ -18,7 +19,7 @@ const {isLoggedIn} = require('../helpers/auth')
 //NUEVA NOTA, siempre requiero que esté identificado
 router.get('/notes/add', isLoggedIn, renderNoteform );
 router.post('/notes/new-note', isLoggedIn, createNewNote );
-router.get('/users/horas/:userid', isLoggedIn, usersCall);
+router.get('/users/horas/:userid/:date', isLoggedIn, usersCall);
 
 
 //TODAS LAS NOTAS

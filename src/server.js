@@ -36,12 +36,7 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
         moment: function(date, format){
             return moment(date).format(format);
         },
-        // contains: function(array, value, option){
-        //   if(array && array.indexOf(value) !== -1){
-        //     return option.fn(this);
-        //   }
-        //   return option.inverse(this);
-        // },
+
     }
 
 }))
