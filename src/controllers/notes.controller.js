@@ -19,7 +19,6 @@ notesCtrl.usersCall = async (req, res) => {
     const dia = req.params.dia;
     const diaInicio = moment(dia).startOf('day');
     const diaFin = moment(dia).endOf('day');
-    // const diaForm = moment(dia).format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
     console.log('usersCall funciona');
 
     try {
@@ -33,8 +32,18 @@ notesCtrl.usersCall = async (req, res) => {
         console.debug('notes: '+notes);
         const horasOcupadas = notes.map((note) => moment(note.fecha).format('HH:mm'));
         console.debug('Fechas ocupadas: '+horasOcupadas)
-        const horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
+        var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
         console.debug('Horas libres: '+ horasLibres);
+
+        const hoy = moment().format('YYYY-MM-DD');
+        console.log('hoy: '+hoy);
+        if (dia == hoy){
+            const horaActual = moment().format('HH:mm');
+            console.log('Hora actual: '+horaActual)
+            horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
+                                                        
+            console.log(horasLibres);
+        }
 
         res.json({ horas: horasLibres });
     } catch (err) {
