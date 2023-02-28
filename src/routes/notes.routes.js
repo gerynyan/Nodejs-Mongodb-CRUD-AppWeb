@@ -5,7 +5,6 @@ const router = Router();
 const {
     renderNoteform, 
     usersCall,
-    horasCall,
     createNewNote, 
     renderNotes, 
     renderEditForm, 

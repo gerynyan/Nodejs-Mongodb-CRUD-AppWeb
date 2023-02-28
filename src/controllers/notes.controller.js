@@ -43,27 +43,6 @@ notesCtrl.usersCall = async (req, res) => {
     }
 };
 
-
-
-notesCtrl.horasCall = async (req, res) => {
-    const { fecha, idEntrenador } = req.query;
-    console.log('horasCall funciona')
-    console.log(fecha);
-    console.log(idEntrenador);
-
-    try {
-        const notes = await Note.findById({idEntrenador: idEntrenador, fecha: fecha}).lean();
-        if (!notes) {
-          return res.status(404).json({ message: 'Citas no encontradas' });
-        }
-        const horas = user.horas || [];
-        res.json({ horas });
-      } catch (err) {
-        console.error(err);
-        res.status(500).json({ message: 'Server error' });
-      }
-
-};
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description, fecha, hora, idEntrenador} = req.body;
