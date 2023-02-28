@@ -11,7 +11,9 @@ const $ = require('jquery');
 
 notesCtrl.renderNoteform = async (req, res) => {
     const users = await User.find({idCliente: req.user}).lean();
-    res.render('notes/new-note', {users});
+    const fechaHoy = moment().format('YYYY-MM-DD');
+
+    res.render('notes/new-note', {users, fechaHoy});
 };
 
 notesCtrl.usersCall = async (req, res) => {
