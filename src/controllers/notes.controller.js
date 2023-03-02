@@ -43,7 +43,6 @@ notesCtrl.usersCall = async (req, res) => {
             const horaActual = moment().format('HH:mm');
             console.log('Hora actual: '+horaActual)
             horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
-                                                        
             console.log(horasLibres);
         }
 
@@ -56,6 +55,7 @@ notesCtrl.usersCall = async (req, res) => {
 
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
+
     const {title, description, fecha, hora, idEntrenador} = req.body;
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
     const newNote = new Note({title, description, fecha: newFecha, idEntrenador});
