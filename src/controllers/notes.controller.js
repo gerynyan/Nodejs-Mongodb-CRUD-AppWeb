@@ -65,7 +65,8 @@ notesCtrl.createNewNote = async (req, res) => {
 //Muestra todas las notas del usuario
 notesCtrl.renderNotes = async (req, res) => {
     try{
-        const notes = await Note.find({idCliente: req.user.id}).sort({fecha: 1}).exec();
+        const today = moment().startOf('day');
+        const notes = await Note.find({idCliente: req.user.id, fecha:{$gte: today}}).sort({fecha: 1}).exec();
 
         const notesNombres = await Promise.all(notes.map(async (nota) => {
             const[entrenador] = await Promise.all([
