@@ -1,21 +1,41 @@
 <div class="col-md-4 mx-auto">
-    <div class="card">
+    <div class="card text-center">
         <div class="card-header">
-            <h3>Editando Nota</h3>
+            <h3><b>Editando Nota</b></h3>
         </div>
         <div class="card-body">
             <form action="/notes/edit/{{note._id}}?_method=PUT" method="POST">
                 <input type="hidden" name="_method" value="PUT">
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <input type="text" name="title" class="form-control" value="{{note.title}}">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-3">
                     <textarea name="description" class="form-control">{{note.description}}</textarea>
                 </div>
+                {{!-- <div class="form-group mb-3">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" class="form-control" name="fecha" id="fecha" value="{{moment note.fecha 'YYYY-MM-DD'}}" min="{{fechaHoy}}">
+                </div> --}}
                 <div class="form-group">
+                    <label for="fecha">Fecha</label>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="date" class="form-control" id="fecha" name="fecha" value="{{moment note.fecha 'YYYY-MM-DD'}}">
+                        </div>
+                        <div class="col-md-6">
+                            <input type="time" class="form-control" id="hora" name="hora" value="{{moment note.fecha 'HH:mm'}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
                     <button class="btn btn-primary btn-block" type="submit">GUARDAR</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+
+{{!-- Formateo de fecha y horas --}}
+<script>
+
+</script>

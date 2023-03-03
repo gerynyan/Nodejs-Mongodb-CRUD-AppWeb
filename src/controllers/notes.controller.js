@@ -37,8 +37,6 @@ notesCtrl.usersCall = async (req, res) => {
         if (dia == hoy){
             const horaActual = moment().format('HH:mm');
             horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
-                                                        
-      
         }
         //retorna las horas
         res.json({ horas: horasLibres });
@@ -94,13 +92,13 @@ notesCtrl.renderNotes = async (req, res) => {
 
 //Renderiza formulario para editar Notas
 notesCtrl.renderEditForm = async (req, res) => {
+    const fechaHoy = moment().format('YYYY-MM-DD');
     const note = await Note.findById(req.params.id).lean();
     if(note.idCliente != req.user.id){
         req.flash('error_msg', 'No tiene autorizción');
         return res.redirect('/notes');
     }
-    console.log('RenderEditForm: '+note);
-    res.render('notes/edit-note', {note});
+    res.render('notes/edit-note', {note, fechaHoy});
 };
 
 //Manda la petición de edición y devuelve a /notes
