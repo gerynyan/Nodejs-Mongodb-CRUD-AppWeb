@@ -21,32 +21,24 @@ notesCtrl.usersCall = async (req, res) => {
     const dia = req.params.dia;
     const diaInicio = moment(dia).startOf('day');
     const diaFin = moment(dia).endOf('day');
-    console.log('usersCall funciona');
-
+    //Guardado de datos
     try {
-        console.log('el try arranca')
+        //Busca las horas del entrenador
         const user = await User.findById(id).lean();
         const horas = user.horas;
-
-        console.log('horas: '+horas);
-        console.log(dia);
+        //busca las horas existentes del día seleccinado
         const notes = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
-        console.debug('notes: '+notes);
         const horasOcupadas = notes.map((note) => moment(note.fecha).format('HH:mm'));
-        console.debug('Fechas ocupadas: '+horasOcupadas)
+        //guarda las horas disponibles
         var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
-        console.debug('Horas libres: '+ horasLibres);
-
+        //si el día es el actual retira las horas que ya hayan pasado
         const hoy = moment().format('YYYY-MM-DD');
         console.log('hoy: '+hoy);
         if (dia == hoy){
             const horaActual = moment().format('HH:mm');
-            console.log('Hora actual: '+horaActual)
             horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
-                                                        
-            console.log(horasLibres);
         }
-
+        //retorna las horas
         res.json({ horas: horasLibres });
     } catch (err) {
       console.error(err);
@@ -57,6 +49,7 @@ notesCtrl.usersCall = async (req, res) => {
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
     const {title, description, fecha, hora, idEntrenador} = req.body;
+
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
     const newNote = new Note({title, description, fecha: newFecha, idEntrenador});
     newNote.idCliente = req.user.id;   
