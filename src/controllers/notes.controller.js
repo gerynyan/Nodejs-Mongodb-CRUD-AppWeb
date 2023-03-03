@@ -37,6 +37,8 @@ notesCtrl.usersCall = async (req, res) => {
         if (dia == hoy){
             const horaActual = moment().format('HH:mm');
             horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
+                                                        
+      
         }
         //retorna las horas
         res.json({ horas: horasLibres });
@@ -48,6 +50,7 @@ notesCtrl.usersCall = async (req, res) => {
 
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
+
     const {title, description, fecha, hora, idEntrenador} = req.body;
 
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
