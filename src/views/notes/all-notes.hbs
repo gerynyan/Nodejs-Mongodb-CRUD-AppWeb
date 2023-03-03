@@ -44,20 +44,20 @@
 </div>
 
 {{!-- Filtro por fecha --}}
-        <script>
-            $("#date-filter").on("change", function() {
-                var value = $(this).val();
-                $("#mycard > .col").each(function() {
-                    var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm").format("YYYY-MM-DD");
-                    if(noteDate === value){
-                        $(this).show();
-                    }else{
-                        $(this).hide();
-                    }
-                });
+    <script>
+        $("#date-filter").on("change", function() {
+            var value = $(this).val();
+            $("#mycard > .col").each(function() {
+                var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm").format("YYYY-MM-DD");
+                if(noteDate === value){
+                    $(this).show();
+                }else{
+                    $(this).hide();
+                }
             });
-            $("#clear-date").on("click", function() {
-                $("#date-filter").val("");
-                $("#mycard > .col").show();
-            });
-        </script>
+        });
+        $("#clear-date").on("click", function() {
+            $("#date-filter").val("");
+            $("#mycard > .col").show();
+        });
+    </script>

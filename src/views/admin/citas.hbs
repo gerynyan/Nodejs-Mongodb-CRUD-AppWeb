@@ -1,6 +1,17 @@
 <h1 class="display-4 fw-bold pb-2">Todas las citas pendientes</h1>
+<div class="card py-1 px-4 mb-2">
+    <b>Seleccione fecha para filtrar:</b>
+    <div class="row row-cols-2">
+        <div class="col">
+            <input type="date" id="date-filter" class="form-control mb-2" text="Select date range">
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" type="button" id="clear-date">Limpiar Filtro</button>
+        </div>
+    </div>
+</div>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
+<div id="mycard"class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     {{#each notes}} <!-- repite por cada carta -->
         <div class="col mb-4 ">
             <div class="card h-100">
@@ -29,3 +40,22 @@
         </div>
     {{/each}}
 </div>
+
+{{!-- Filtro por fecha --}}
+    <script>
+        $("#date-filter").on("change", function() {
+            var value = $(this).val();
+            $("#mycard > .col").each(function() {
+                var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm").format("YYYY-MM-DD");
+                if(noteDate === value){
+                    $(this).show();
+                }else{
+                    $(this).hide();
+                }
+            });
+        });
+        $("#clear-date").on("click", function() {
+            $("#date-filter").val("");
+            $("#mycard > .col").show();
+        });
+    </script>
