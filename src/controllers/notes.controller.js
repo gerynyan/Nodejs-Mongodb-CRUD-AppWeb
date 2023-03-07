@@ -28,9 +28,12 @@ notesCtrl.usersCall = async (req, res) => {
             //Busca las horas del entrenador
             const user = await User.findById(id).lean();
             const horas = user.horas;
-            //busca las horas existentes del día seleccinado
-            const notes = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
-            const horasOcupadas = notes.map((note) => moment(note.fecha).format('HH:mm'));
+            //busca las horas existentes del entrenador y cliente del día seleccinado
+            const citasEntrenador = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
+            const citasCliente = await Note.find({idCliente: req.params.id, fecha:{$gte: diaInicio, $lt: diaFin}});
+            const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
+            const horasOcupadas = [...new Set([...hoE, ...hoC])];
             //guarda las horas disponibles
             var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
             //si el día es el actual retira las horas que ya hayan pasado
@@ -158,7 +161,7 @@ notesCtrl.renderEditForm = async (req, res) => {
     }
     console.debug('HorasLibres: '+horasLibres);
     res.render('notes/edit-note', {note, fechaHoy, horaCita, horasLibres});
-};
+};  
 
 //Manda la petición de edición y devuelve a /notes
 notesCtrl.updateNote = async (req, res) => {
@@ -166,10 +169,6 @@ notesCtrl.updateNote = async (req, res) => {
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
     await Note.findByIdAndUpdate(req.params.id, {title, description, fecha: newFecha})
     // mensaje
-    if(req.user.permisos === 1){
-        req.flash('success_msg', 'Nota editada correctamente');
-        res.redirect('/entrenador/citas')
-    }
     req.flash('success_msg', 'Nota editada correctamente');
     res.redirect('/notes')
 };
