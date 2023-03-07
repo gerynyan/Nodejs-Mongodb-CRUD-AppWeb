@@ -24,9 +24,14 @@
                         </div>
                         <div class="col-md-6">
                             <select class="form-control" name="hora" id="hora">
-                                <option selected value="{{moment note.fecha 'HH:mm'}}" >{{moment note.fecha 'HH:mm'}}</option>
+
                                 {{#each horasLibres}}
-                                    <option value="{{this}}">{{this}}</option>
+                                    <option value="{{this}}"
+                                        {{#if (eq this ../horaCita)}}
+                                            selected {{/if}}>
+                                        {{this}}
+                                    </option>
+
                                 {{/each}}
                             </select>                        
                         </div>

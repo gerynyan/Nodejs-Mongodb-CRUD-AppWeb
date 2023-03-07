@@ -21,6 +21,14 @@
             </select>
         </div>
         <div class="col">
+            <select type="date" id="year-filter" class="form-control mb-2" text="Select date range">
+                {{#each years}}
+                <option value="{{this}}">{{this}}</option>
+                {{/each}}
+
+            </select>
+        </div>
+        <div class="col">
             <button class="btn btn-primary" type="button" id="clear-date">Limpiar Filtro</button>
         </div>
     </div>
@@ -58,11 +66,14 @@
 
 {{!-- Crea las opciones de años --}}
 <script>
-    $("#mes-filter").on("change", function() {
-        var value = $(this).val();
+    $("#mes-filter, #year-filter").on("change", function() {
+        var monthValue = $("#mes-filter").val();
+        var yearValue = $("#year-filter").val();
         $("#mycard > .col").each(function() {
-            var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm").format("MM");
-            if(noteDate === value){
+            var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm");
+            var noteMonth = noteDate.format("MM");
+            var noteYear = noteDate.format("YYYY");
+            if(monthValue === noteMonth && yearValue === noteYear){
                 $(this).show();
             }else{
                 $(this).hide();
@@ -72,6 +83,8 @@
     $("#clear-date").on("click", function() {
         $("#mes-filter").val("");
         $("#mes-filter")[0].selectedIndex = 0;
+        $("#year-filter").val("");
+        $("#year-filter")[0].selectedIndex = 0;
         $("#mycard > .col").show();
     });
 </script>

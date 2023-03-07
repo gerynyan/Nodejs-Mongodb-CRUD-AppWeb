@@ -109,7 +109,14 @@ notesCtrl.renderNotes = async (req, res) => {
                 entrenador: entrenador.name
             };
         }));
-        res.render('notes/all-notes', {notes: notesNombres});
+        const year = new Date().getFullYear();
+        let years = [];
+        for (i = year ; i <= year + 3; i++){
+            years.push(i);
+        }
+        console.log(years);
+
+        res.render('notes/all-notes', {notes: notesNombres, years});
     }catch(error){
         console.error(error);
         res.status(500).send('server error');
@@ -121,32 +128,47 @@ notesCtrl.renderEditForm = async (req, res) => {
     const fechaHoy = moment().format('YYYY-MM-DD');
     //Busca la cita
     const note = await Note.findById(req.params.id).lean();
+    const horaCita = moment(note.fecha).format('HH:mm');
+    console.log('HoraCita: '+horaCita)
+    //Comprueba permiso de edición
     if(note.idCliente != req.user.id){
-        req.flash('error_msg', 'No tiene autorizción');
-        return res.redirect('/notes');
+        if(note.idEntrenador != req.user.id){
+            req.flash('error_msg', 'No tiene autorizción');
+            return res.redirect('/');
+        }
     }
     //busca el resto de horas libres para el primer renderizado
+    //día de la nota
     const dia = note.fecha;
     const diaInicio = moment(dia).startOf('day');
     const diaFin = moment(dia).endOf('day');
+    //horario del entrenador
+    const user = await User.findById(note.idEntrenador).lean();
+    const horario = user.horas;
+    //citas el mismo día
     const horas = await Note.find({idEntrenador: note.idEntrenador, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: note._id}});
-    const horasOcupadas = horas.map((note) => moment(note.fecha).format('HH:mm'));
-    var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
+    const horasOcupadas = horas.map((horas) => moment(horas.fecha).format('HH:mm'));
+    //guarda las horas libres comparando horario y ocupadas
+    var horasLibres = horario.filter((hora) => !horasOcupadas.includes(hora));
     const hoy = moment().format('YYYY-MM-DD');
     if (dia == hoy){
         const horaActual = moment().format('HH:mm');
         horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
     }
-    console.debug(horasLibres);
-    console.debug(note);
-    res.render('notes/edit-note', {note, fechaHoy, horasLibres});
+    console.debug('HorasLibres: '+horasLibres);
+    res.render('notes/edit-note', {note, fechaHoy, horaCita, horasLibres});
 };
 
 //Manda la petición de edición y devuelve a /notes
 notesCtrl.updateNote = async (req, res) => {
-    const {title, description} = req.body;
-    await Note.findByIdAndUpdate(req.params.id, {title, description})
+    const {title, description, fecha, hora} = req.body;
+    const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
+    await Note.findByIdAndUpdate(req.params.id, {title, description, fecha: newFecha})
     // mensaje
+    if(req.user.permisos === 1){
+        req.flash('success_msg', 'Nota editada correctamente');
+        res.redirect('/entrenador/citas')
+    }
     req.flash('success_msg', 'Nota editada correctamente');
     res.redirect('/notes')
 };

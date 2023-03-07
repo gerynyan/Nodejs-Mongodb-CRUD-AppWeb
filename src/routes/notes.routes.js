@@ -19,6 +19,7 @@ const {isLoggedIn} = require('../helpers/auth')
 router.get('/notes/add', isLoggedIn, renderNoteform );
 router.post('/notes/new-note', isLoggedIn, createNewNote );
 router.get('/users/horas/:id/:dia/:idCita', isLoggedIn, usersCall);
+router.get('/users/horas/:id/:dia', isLoggedIn, usersCall);
 
 //TODAS LAS NOTAS
 router.get('/notes', isLoggedIn, renderNotes )
