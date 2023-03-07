@@ -76,10 +76,11 @@ notesCtrl.usersCall = async (req, res) => {
 notesCtrl.createNewNote = async (req, res) => {
 
     const {title, description, fecha, hora, idEntrenador} = req.body;
-
+    console.log("title: "+title+" desc: "+description+" fecha: "+fecha+" hora: "+ "identre: " +idEntrenador);
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
+    console.log("new fecha: "+newFecha);
     const newNote = new Note({title, description, fecha: newFecha, idEntrenador});
-    newNote.idCliente = req.user.id;   
+    newNote.idCliente = req.user.id;
     await newNote.save();
     // mensaje
     req.flash('succes_msg', 'Nota agregada con éxito');

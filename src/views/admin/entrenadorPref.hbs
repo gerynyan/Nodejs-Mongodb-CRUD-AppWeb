@@ -14,11 +14,15 @@
                     <textarea name="email" class="form-control mb-3">{{user.email}}</textarea>
                 </div>
                 <p>Seleccione las horas en las que esté disponible, (Las citas creadas antes de este cambio seguirán existiendo):</p>
-                {{#each allHours}}
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="{{this}}" name="horasCheck" value="{{this}}" {{#if (contains ../user.horas this)}}checked{{/if}}> {{this}}
+                <div class="row row cols-3">
+                    {{#each allHours}}
+                    <div class="col">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="{{this}}" name="horasCheck" value="{{this}}" {{#if (contains ../user.horas this)}}checked{{/if}}> {{this}}
+                        </div>
+                    </div>
+                    {{/each}}
                 </div>
-                {{/each}}
                 <div class="form-group">
                     <button class="btn btn-primary btn-block" type="submit">GUARDAR</button>
                 </div>
