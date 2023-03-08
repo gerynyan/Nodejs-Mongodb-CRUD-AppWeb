@@ -32,6 +32,8 @@ notesCtrl.usersCall = async (req, res) => {
             const citasEntrenador = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
             const citasCliente = await Note.find({idCliente: req.params.id, fecha:{$gte: diaInicio, $lt: diaFin}});
             const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+            console.log(hoE);
+            console.log(hoC);
             const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
             const horasOcupadas = [...new Set([...hoE, ...hoC])];
             //guarda las horas disponibles
@@ -54,9 +56,15 @@ notesCtrl.usersCall = async (req, res) => {
         //Busca las horas del entrenador
         const user = await User.findById(id).lean();
         const horas = user.horas;
-        //busca las horas existentes del día seleccinado
-        const notes = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: idCita}});
-        const horasOcupadas = notes.map((note) => moment(note.fecha).format('HH:mm'));
+        //saca el id del cliente de la cita.
+        const cita  = await Note.findById(idCita).lean();
+        const idCliente = cita.idCliente; 
+        //busca las horas existentes de cliente y entrenador del día seleccinado.
+        const citasEntrenador = await Note.find({idEntrenador: req.params.id, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: idCita}});
+        const citasCliente = await Note.find({idCliente: idCliente, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: idCita}})
+        const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+        const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
+        const horasOcupadas = [...new Set([...hoE, ...hoC])];
         //guarda las horas disponibles
         var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
         //si el día es el actual retira las horas que ya hayan pasado
@@ -168,9 +176,20 @@ notesCtrl.updateNote = async (req, res) => {
     const {title, description, fecha, hora} = req.body;
     const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();    
     await Note.findByIdAndUpdate(req.params.id, {title, description, fecha: newFecha})
+
     // mensaje
     req.flash('success_msg', 'Nota editada correctamente');
-    res.redirect('/notes')
+    var permisos = req.user.permisos;
+    switch (permisos) {
+        case 1:
+        res.redirect('/entrenador/citas');
+        break;
+        case 2:
+        res.redirect('/notes');
+        break;
+        default:
+        res.redirect('/');
+    }
 };
 
 // Método para borrar la nota y recargar la ventana
@@ -179,8 +198,5 @@ notesCtrl.deleteNote = async (req, res) => {
     req.flash('success_msg', 'Nota eliminada con éxito');
     res.redirect('/notes')
 };
-
-
-//AJUSTE HORAS
 
 module.exports = notesCtrl;
