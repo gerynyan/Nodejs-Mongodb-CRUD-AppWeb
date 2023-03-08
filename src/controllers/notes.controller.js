@@ -155,13 +155,17 @@ notesCtrl.renderEditForm = async (req, res) => {
     const diaInicio = moment(dia).startOf('day');
     const diaFin = moment(dia).endOf('day');
     //horario del entrenador
-    const user = await User.findById(note.idEntrenador).lean();
-    const horario = user.horas;
+    const entrenador = await User.findById(note.idEntrenador).lean();
+    const he = entrenador.horas;
+    const cliente = await User.findById(note.idCliente).lean();
     //citas el mismo día
-    const horas = await Note.find({idEntrenador: note.idEntrenador, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: note._id}});
-    const horasOcupadas = horas.map((horas) => moment(horas.fecha).format('HH:mm'));
+    const citasEntrenador = await Note.find({idEntrenador: note.idEntrenador, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: note._id}});
+    const citasCliente = await Note.find({idCliente: note.idCliente, fecha:{$gte: diaInicio, $lt: diaFin}, _id:{$ne: note._id}});
+    const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+    const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
+    const horasOcupadas = [...new Set([...hoE, ...hoC])];
     //guarda las horas libres comparando horario y ocupadas
-    var horasLibres = horario.filter((hora) => !horasOcupadas.includes(hora));
+    var horasLibres = he.filter((hora) => !horasOcupadas.includes(hora));
     const hoy = moment().format('YYYY-MM-DD');
     if (dia == hoy){
         const horaActual = moment().format('HH:mm');
