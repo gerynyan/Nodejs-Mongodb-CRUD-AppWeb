@@ -25,6 +25,7 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
     extname: '.hbs' ,
 
     helpers:{
+      //Helpers para comparar valores y formatear fechas
         eq: function(op1, op2){
             console.log('Comparar nivel: '+ op1, op2)
             if (op1 == op2){
@@ -42,6 +43,7 @@ app.engine('.hbs', exphbs.engine({   //Motor para utilizar las plantillas de Han
 }))
 app.set('view engine', 'hbs');//Utiliza el motor anterior.
 
+//Añade el helper contains que busca valores en un array
 Handlebars.registerHelper('contains', function(array, value) {
   if (array && array.includes(value)) {
     return true;
@@ -83,32 +85,5 @@ app.use(require('./routes/admin.routes'));
 
 //Archivos estáticos
 app.use(express.static(path.join(__dirname, 'public'))); //permite el uso de los archivos en esta dirección.
-
-//obtiene horas
-app.post('/getAvailableTimes', (req, res) => {
-    const selectedDate = moment(req.body.date).format('YYYY-MM-DD');
-    Note.find({ date: selectedDate })
-      .select('time')
-      .sort('time')
-      .exec((err, notes) => {
-        if (err) {
-          console.log(err);
-          res.status(500).send('Error retrieving notes');
-        } else {
-          const unavailableTimes = notes.map(note => note.time);
-          const availableTimes = [];
-          let currentTime = moment('10:00', 'HH:mm');
-          const endTime = moment('15:00', 'HH:mm');
-          while (currentTime.isBefore(endTime)) {
-            const timeString = currentTime.format('HH:mm');
-            if (!unavailableTimes.includes(timeString)) {
-              availableTimes.push(timeString);
-            }
-            currentTime = currentTime.add(30, 'minutes');
-          }
-          res.send(availableTimes);
-        }
-      });
-  });
  
 module.exports = app;//exporta el módulo

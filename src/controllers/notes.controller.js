@@ -3,7 +3,6 @@ const Note = require('../models/Note');
 const User = require('../models/User');  
 const moment = require('moment');
 const mongoose = require('mongoose');
-
 const $ = require('jquery');
 
 
@@ -32,9 +31,9 @@ notesCtrl.usersCall = async (req, res) => {
             const citasEntrenador = await Note.find({idEntrenador: id, fecha:{$gte: diaInicio, $lt: diaFin}});
             const citasCliente = await Note.find({idCliente: req.params.id, fecha:{$gte: diaInicio, $lt: diaFin}});
             const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
             console.log(hoE);
             console.log(hoC);
-            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
             const horasOcupadas = [...new Set([...hoE, ...hoC])];
             //guarda las horas disponibles
             var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
