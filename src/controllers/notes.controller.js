@@ -65,11 +65,9 @@ notesCtrl.renderEditForm = async (req, res) => {
     const horaCita = moment(note.fecha).format('HH:mm');
     console.log('HoraCita: ' + horaCita)
     //Comprueba permiso de edición
-    if (note.idCliente != req.user.id) {
-        if (note.idEntrenador != req.user.id) {
-            req.flash('error_msg', 'No tiene autorizción');
-            return res.redirect('/');
-        }
+    if (note.idCliente != req.user.id && note.idEntrenador != req.user.id) {
+        req.flash('error_msg', 'No tiene autorizción');
+        return res.redirect('/');
     }
     //busca el resto de horas libres para el primer renderizado
     //día de la nota
