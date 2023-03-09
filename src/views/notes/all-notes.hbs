@@ -1,23 +1,22 @@
 <h1 class="display-4 fw-bold pb-2">Citas pendientes</h1>
 <div class="card py-1 px-4 mb-2">
-            <b>Seleccione fecha para filtrar:</b>
-
+    <b>Seleccione fecha para filtrar:</b>
     <div class="row row-cols-3">
         <div class="col">
             <select type="date" id="mes-filter" class="form-control mb-2" text="Select date range">
                 <option selected value="">Seleccione Mes</option>
-                <option  value="01">Enero</option>
-                <option  value="02">Febrero</option>
-                <option  value="03">Marzo</option>
-                <option  value="04">Abril</option>
-                <option  value="05">Mayo</option>
-                <option  value="06">Junio</option>
-                <option  value="07">Julio</option>
-                <option  value="08">Agosto</option>
-                <option  value="09">Septiembre</option>
-                <option  value="10">Octubre</option>
-                <option  value="11">Noviembre</option>
-                <option  value="12">Diciembre</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
             </select>
         </div>
         <div class="col">
@@ -36,51 +35,51 @@
 
 <div id="mycard" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
     {{#each notes}} <!-- repite por cada carta -->
-        <div class="col mb-4 ">
-            <div class="card h-100">
-                <h4 class="card-header text-center"><b>{{moment fecha 'DD-MM-YYYY HH:mm'}}</b></h4>
-                <div class="card-body">
-                    <h5 class="card-title d-flex justify-content-between align-items-center">
-                        {{title}} <a href="/notes/edit/{{_id}}"><i class="fa-solid fa-pencil"></i></a>
-                    </h5>
-                    <p>Entrenador: {{this.entrenador}}</p>
-                    <p>Detalles: {{description}}</p>
-                    <form id="delete-form-{{_id}}" action="/notes/delete/{{_id}}?_method=DELETE" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button id="delete-btn" type="submit" class="btn btn-danger btn-block btn-sm">BORRAR</button>
-                    </form>
-                    <script>
-                       document.getElementById("delete-form-{{_id}}").addEventListener("submit", function(event) {
-                            console.log('Funciona');
-                            var confirmation = confirm("¿Estás seguro que deseas borrar esta cita?");
-                            if (!confirmation) {
-                                event.preventDefault();
-                            }
-                        });
-                    </script>
-                </div>
+    <div class="col mb-4 ">
+        <div class="card h-100">
+            <h4 class="card-header text-center"><b>{{moment fecha 'DD-MM-YYYY HH:mm'}}</b></h4>
+            <div class="card-body">
+                <h5 class="card-title d-flex justify-content-between align-items-center">
+                    {{title}} <a href="/notes/edit/{{_id}}"><i class="fa-solid fa-pencil"></i></a>
+                </h5>
+                <p>Entrenador: {{this.entrenador}}</p>
+                <p>Detalles: {{description}}</p>
+                <form id="delete-form-{{_id}}" action="/notes/delete/{{_id}}?_method=DELETE" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button id="delete-btn" type="submit" class="btn btn-danger btn-block btn-sm">BORRAR</button>
+                </form>
+                <script>
+                    document.getElementById("delete-form-{{_id}}").addEventListener("submit", function (event) {
+                        console.log('Funciona');
+                        var confirmation = confirm("¿Estás seguro que deseas borrar esta cita?");
+                        if (!confirmation) {
+                            event.preventDefault();
+                        }
+                    });
+                </script>
             </div>
         </div>
+    </div>
     {{/each}}
 </div>
 
 {{!-- Crea las opciones de años --}}
 <script>
-    $("#mes-filter, #year-filter").on("change", function() {
+    $("#mes-filter, #year-filter").on("change", function () {
         var monthValue = $("#mes-filter").val();
         var yearValue = $("#year-filter").val();
-        $("#mycard > .col").each(function() {
+        $("#mycard > .col").each(function () {
             var noteDate = moment($(this).find(".card-header b").text(), "DD-MM-YYYY HH:mm");
             var noteMonth = noteDate.format("MM");
             var noteYear = noteDate.format("YYYY");
-            if(monthValue === noteMonth && yearValue === noteYear){
+            if (monthValue === noteMonth && yearValue === noteYear) {
                 $(this).show();
-            }else{
+            } else {
                 $(this).hide();
             }
         });
     });
-    $("#clear-date").on("click", function() {
+    $("#clear-date").on("click", function () {
         $("#mes-filter").val("");
         $("#mes-filter")[0].selectedIndex = 0;
         $("#year-filter").val("");

@@ -1,7 +1,7 @@
 <div class="col-md-4 mx-auto">
     <div class="card text-center">
         <div class="card-header">
-            <h3><b>Editando Nota</b></h3>
+            <h3><b>Editando Cita</b></h3>
         </div>
         <div class="card-body">
             <form action="/notes/edit/{{note._id}}?_method=PUT" method="POST">
@@ -12,25 +12,22 @@
                 <div class="form-group mb-3">
                     <textarea name="description" class="form-control">{{note.description}}</textarea>
                 </div>
-
                 <div class="form-group mb-3">
                     <label for="fecha">Fecha</label>
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="date" class="form-control" id="fecha" name="fecha" value="{{moment note.fecha 'YYYY-MM-DD'}}" min="{{fechaHoy}}">
+                            <input type="date" class="form-control" id="fecha" name="fecha"
+                                value="{{moment note.fecha 'YYYY-MM-DD'}}" min="{{fechaHoy}}">
                         </div>
                         <div class="col-md-6">
                             <select class="form-control" name="hora" id="hora">
-
                                 {{#each horasLibres}}
-                                    <option value="{{this}}"
-                                        {{#if (eq this ../horaCita)}}
-                                            selected {{/if}}>
-                                        {{this}}
-                                    </option>
+                                <option value="{{this}}" {{#if (eq this ../horaCita)}} selected {{/if}}>
+                                    {{this}}
+                                </option>
 
                                 {{/each}}
-                            </select>                        
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -43,37 +40,34 @@
 </div>
 
 <script>
-async function updateHorasSelect() {
-    console.log('se ejecuta')
-    //guarda los valores de campos
-    const selectedUserId = "{{note.idEntrenador}}";  
-    const diaSelect = document.querySelector('[name="fecha"]').value;
-    const horasSelect = document.querySelector('[name="hora"]');
-    const idCita = "{{note._id}}";
-    //El script solo se ejecuta si campos ID y FECHA != null
-
-    console.log('empieza el script');
-    console.log('Id cita: ' +idCita);
-    console.log('Día seleccionado' +diaSelect);
+    async function updateHorasSelect() {
+        console.log('se ejecuta')
+        //guarda los valores de campos
+        const selectedUserId = "{{note.idEntrenador}}";
+        const diaSelect = document.querySelector('[name="fecha"]').value;
+        const horasSelect = document.querySelector('[name="hora"]');
+        const idCita = "{{note._id}}";
+        //El script solo se ejecuta si campos ID y FECHA != null
+        console.log('empieza el script');
+        console.log('Id cita: ' + idCita);
+        console.log('Día seleccionado' + diaSelect);
         try {
-        //busca en la base de datos
-        const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}/${idCita}`);
-        const selectedUser = await response.json();
-        const HorasUsuario = selectedUser.horas;
-
-        // limpia las opciones previas
-        horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
-
-        // Add new options based on the selected user's "Horas" array
-        HorasUsuario.forEach(hora => {
-            const option = document.createElement('option');
-            option.value = hora;
-            option.text = hora;
-            horasSelect.appendChild(option);
-        });
+            //busca en la base de datos
+            const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}/${idCita}`);
+            const selectedUser = await response.json();
+            const HorasUsuario = selectedUser.horas;
+            // limpia las opciones previas
+            horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
+            // Add new options based on the selected user's "Horas" array
+            HorasUsuario.forEach(hora => {
+                const option = document.createElement('option');
+                option.value = hora;
+                option.text = hora;
+                horasSelect.appendChild(option);
+            });
         } catch (error) {
-        console.error(error);
+            console.error(error);
         }
     };
-document.querySelector('[name="fecha"]').addEventListener('change', updateHorasSelect);
+    document.querySelector('[name="fecha"]').addEventListener('change', updateHorasSelect);
 </script>

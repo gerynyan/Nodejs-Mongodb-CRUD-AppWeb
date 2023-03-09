@@ -9,27 +9,27 @@ passport.use(new localStrategy({
 }, async (email, password, done) => {
 
     //¿existe correo?
-    const user = await User.findOne({email})
-    if(!user){
-        return done(null, false, {message: 'No se ha encontrado usuario con dicho email o contraseña (email)'});
-    }else{
+    const user = await User.findOne({ email })
+    if (!user) {
+        return done(null, false, { message: 'No se ha encontrado usuario con dicho email o contraseña (email)' });
+    } else {
         const match = await user.matchPassword(password);
-        if(match){
+        if (match) {
             return done(null, user);
-        }else{
-            return done(null, false, {message: 'No se ha encontrado usuario con dicho email o contraseña (contraseña)'});
+        } else {
+            return done(null, false, { message: 'No se ha encontrado usuario con dicho email o contraseña (contraseña)' });
         }
     }
 
 }));
 
 //Guarda el usuario
-passport.serializeUser((user, done) =>{
+passport.serializeUser((user, done) => {
     done(null, user.id);
 });
 //comprueba permisos del usuario
 passport.deserializeUser((id, done) => {
-    User.findById(id, (err, user) =>{
+    User.findById(id, (err, user) => {
         done(err, user);
     })
 })

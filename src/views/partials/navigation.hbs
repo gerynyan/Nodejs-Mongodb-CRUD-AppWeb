@@ -1,5 +1,5 @@
 <!-- MENÚ DE LA WEB -->
-<nav class="navbar navbar-expand-lg bg-dark w-100" data-bs-theme="dark" >
+<nav class="navbar navbar-expand-lg bg-dark w-100" data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="/">Citas Gimnasio</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -16,40 +16,43 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                    <!-- SOLO VISIBLE SI IDENTIFICADO -->
-                    {{#if user}}
-                        <li id="ocAdmin" class="nav-item" data-perms="{{perms}}">
-                            <a class="nav-link" href="/admin/permisos">Permisos</a>
+                <!-- SOLO VISIBLE SI IDENTIFICADO -->
+                {{#if user}}
+                <li id="ocAdmin" class="nav-item" data-perms="{{perms}}">
+                    <a class="nav-link" href="/admin/permisos">Permisos</a>
+                </li>
+                <li id="ocCitas" class="nav-item">
+                    <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
+                </li>
+                <li id="ocCitasHoy" class="nav-item">
+                    <a class="nav-link" href="/entrenador/citas-dia">"Citas de Hoy"</a>
+                </li>
+                <li id="ocPreferencias" class="nav-item">
+                    <a class="nav-link" href="/entrenador/preferencias">"Preferencias"</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        Citas
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="/notes">Todas las Citas</a></li>
+                        <li><a class="dropdown-item" href="/notes/add">Agregar nueva Cita</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
                         </li>
-                        <li id="ocCitas" class="nav-item">
-                            <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
-                        </li>
-                        <li id="ocCitasHoy" class="nav-item" >
-                            <a class="nav-link" href="/entrenador/citas-dia">"Citas de Hoy"</a>
-                        </li>
-                        <li id="ocPreferencias" class="nav-item" >
-                            <a class="nav-link" href="/entrenador/preferencias">"Preferencias"</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Notas
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="/notes">Todas las Notas</a></li>
-                                <li><a class="dropdown-item" href="/notes/add">Agregar nueva Nota</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/users/logout">Cerrar sesión</a></li>
-                            </ul>
-                        </li>
-                    {{else}}
-                    <!-- SI NO ESTA IDENTIFICADO -->
-                        <li class="nav-item">
-                            <a href="/users/signin" class="nav-link">Acceso</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/users/signup" class="nav-link">Registrarse</a>
-                        </li>
-                    {{/if}}
+                        <li><a class="dropdown-item" href="/users/logout">Cerrar sesión</a></li>
+                    </ul>
+                </li>
+                {{else}}
+                <!-- SI NO ESTA IDENTIFICADO -->
+                <li class="nav-item">
+                    <a href="/users/signin" class="nav-link">Acceso</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/users/signup" class="nav-link">Registrarse</a>
+                </li>
+                {{/if}}
             </ul>
         </div>
     </div>
@@ -57,27 +60,24 @@
 <script>
     const ocAdmin = document.getElementById('ocAdmin');
     const perms = ocAdmin.dataset.perms;
-
     if (perms === '0') {
-        ocAdmin.classList.remove('hidden'); 
+        ocAdmin.classList.remove('hidden');
     } else {
-        ocAdmin.classList.add('hidden'); 
+        ocAdmin.classList.add('hidden');
     }
-
     if (perms === '1') {
-        ocCitas.classList.remove('hidden'); 
+        ocCitas.classList.remove('hidden');
     } else {
-        ocCitas.classList.add('hidden'); 
-    }     
+        ocCitas.classList.add('hidden');
+    }
     if (perms === '1') {
-        ocCitasHoy.classList.remove('hidden'); 
+        ocCitasHoy.classList.remove('hidden');
     } else {
-        ocCitasHoy.classList.add('hidden'); 
-    }     
+        ocCitasHoy.classList.add('hidden');
+    }
     if (perms === '1') {
-        ocPreferencias.classList.remove('hidden'); 
+        ocPreferencias.classList.remove('hidden');
     } else {
-        ocPreferencias.classList.add('hidden'); 
+        ocPreferencias.classList.add('hidden');
     }     
-
 </script>

@@ -1,7 +1,6 @@
 const helpers = {};
 const User = require('../models/User');  
 
-
 //Verifica si el usuario está identificado
 helpers.isLoggedIn = (req, res, next) => {
     if (req.isAuthenticated()){

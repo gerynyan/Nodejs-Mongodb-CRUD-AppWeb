@@ -1,24 +1,24 @@
 <div class="col-md-4 mx-auto">
     <div class="card text-center">
         <div class="card-header">
-            <h3><b>Nueva Cita</b></h3>    
+            <h3><b>Nueva Cita</b></h3>
         </div>
         <div class="card-body">
             <form action="/notes/new-note" method="POST">
                 <div class="form-group mb-3">
-                    <input name="title" type="text" class="form-control" placeholder="Título" autofocus>     
+                    <input name="title" type="text" class="form-control" placeholder="Título" autofocus>
                 </div>
                 <div class="form-group mb-3">
                     <textarea name="description" placeholder="Descripción" class="form-control"></textarea>
-                </div> 
+                </div>
                 <div>
                     <select class="form-control mb-3" name="idEntrenador" aria-label="Default select example">
                         <option selected value="">Seleccione Entrenador</option>
                         <!-- repite por cada carta -->
-                        {{#each users}} 
-                            {{#if (eq permisos  1)}}
-                            <option value="{{_id}}"> {{name}}</option>
-                            {{/if}}
+                        {{#each users}}
+                        {{#if (eq permisos 1)}}
+                        <option value="{{_id}}"> {{name}}</option>
+                        {{/if}}
                         {{/each}}
                     </select>
                 </div>
@@ -43,43 +43,39 @@
 </div>
 
 <script>
-async function updateHorasSelect() {
-    //guarda los valores de campos
-    const selectedUserId = document.querySelector('[name="idEntrenador"]').value;    
-    const diaSelect = document.querySelector('[name="fecha"]').value;
-    const horasSelect = document.querySelector('[name="hora"]');
+    async function updateHorasSelect() {
+        //guarda los valores de campos
+        const selectedUserId = document.querySelector('[name="idEntrenador"]').value;
+        const diaSelect = document.querySelector('[name="fecha"]').value;
+        const horasSelect = document.querySelector('[name="hora"]');
+        //El script solo se ejecuta si campos ID y FECHA != null
+        if (!selectedUserId || !diaSelect) {
+        } else {
+            console.log('empieza el script')
+            console.log('Id Entrenador: ' + selectedUserId);
+            console.log('Día seleccionado' + diaSelect);
+            try {
+                //busca en la base de datos
+                const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}`);
+                const selectedUser = await response.json();
+                const HorasUsuario = selectedUser.horas;
 
-    //El script solo se ejecuta si campos ID y FECHA != null
-    if(!selectedUserId || !diaSelect){
-    }else{
-    console.log('empieza el script')
-    console.log('Id Entrenador: ' +selectedUserId);
-    console.log('Día seleccionado' +diaSelect);
-        try {
-        //busca en la base de datos
-        const response = await fetch(`/users/horas/${selectedUserId}/${diaSelect}`);
-        const selectedUser = await response.json();
-        const HorasUsuario = selectedUser.horas;
+                // limpia las opciones previas
+                horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
 
-        // limpia las opciones previas
-        horasSelect.innerHTML = '<option selected disabled>Seleccione Hora</option>';
-
-        // Add new options based on the selected user's "Horas" array
-        HorasUsuario.forEach(hora => {
-            const option = document.createElement('option');
-            option.value = hora;
-            option.text = hora;
-            horasSelect.appendChild(option);
-        });
-        } catch (error) {
-        console.error(error);
+                // Add new options based on the selected user's "Horas" array
+                HorasUsuario.forEach(hora => {
+                    const option = document.createElement('option');
+                    option.value = hora;
+                    option.text = hora;
+                    horasSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error(error);
+            }
         }
-    }
 
-  };
-
-document.querySelector('[name="idEntrenador"]').addEventListener('change', updateHorasSelect);
-document.querySelector('[name="fecha"]').addEventListener('change', updateHorasSelect);
-
- 
+    };
+    document.querySelector('[name="idEntrenador"]').addEventListener('change', updateHorasSelect);
+    document.querySelector('[name="fecha"]').addEventListener('change', updateHorasSelect);
 </script>

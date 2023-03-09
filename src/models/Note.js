@@ -3,12 +3,9 @@ const mongoose = require('mongoose');
 
 //creo el esquema de una nota, que será guardada en la base de datos.
 const NoteSchema = new mongoose.Schema({
-    title: {type: String,required: true},
-    description: {type: String,required: false},
-    fecha:{
-        type: Date,
-        required: true
-    },
+    title: {type: String, required: true},
+    description: {type: String, required: false},
+    fecha: {type: Date, required: true},
     idCliente: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
