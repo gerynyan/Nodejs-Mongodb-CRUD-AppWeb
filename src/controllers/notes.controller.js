@@ -3,79 +3,12 @@ const Note = require('../models/Note');
 const User = require('../models/User');
 const moment = require('moment');
 const mongoose = require('mongoose');
-const $ = require('jquery');
 
 //controlador para renderizar vistas y procesar peticones.
 notesCtrl.renderNoteform = async (req, res) => {
     const users = await User.find({ idCliente: req.user }).lean();
     const fechaHoy = moment().format('YYYY-MM-DD');
     res.render('notes/new-note', { users, fechaHoy });
-};
-
-notesCtrl.usersCall = async (req, res) => {
-    const id = req.params.id;
-    const dia = req.params.dia;
-    const diaInicio = moment(dia).startOf('day');
-    const diaFin = moment(dia).endOf('day');
-    const idCita = req.params.idCita;
-    //Guardado de datos
-    if (!idCita) {
-        try {
-            //Busca las horas del entrenador
-            const user = await User.findById(id).lean();
-            const horas = user.horas;
-            //busca las horas existentes del entrenador y cliente del día seleccinado
-            const citasEntrenador = await Note.find({ idEntrenador: id, fecha: { $gte: diaInicio, $lt: diaFin } });
-            const citasCliente = await Note.find({ idCliente: req.params.id, fecha: { $gte: diaInicio, $lt: diaFin } });
-            const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
-            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
-            console.log(hoE);
-            console.log(hoC);
-            const horasOcupadas = [...new Set([...hoE, ...hoC])];
-            //guarda las horas disponibles
-            var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
-            //si el día es el actual retira las horas que ya hayan pasado
-            const hoy = moment().format('YYYY-MM-DD');
-            if (dia == hoy) {
-                const horaActual = moment().format('HH:mm');
-                horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
-            }
-            //retorna las horas
-            res.json({ horas: horasLibres });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Server error' });
-        }
-    } else {
-        try {
-            console.log('ejecuta segudo')
-            //Busca las horas del entrenador
-            const user = await User.findById(id).lean();
-            const horas = user.horas;
-            //saca el id del cliente de la cita.
-            const cita = await Note.findById(idCita).lean();
-            const idCliente = cita.idCliente;
-            //busca las horas existentes de cliente y entrenador del día seleccinado.
-            const citasEntrenador = await Note.find({ idEntrenador: req.params.id, fecha: { $gte: diaInicio, $lt: diaFin }, _id: { $ne: idCita } });
-            const citasCliente = await Note.find({ idCliente: idCliente, fecha: { $gte: diaInicio, $lt: diaFin }, _id: { $ne: idCita } })
-            const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
-            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
-            const horasOcupadas = [...new Set([...hoE, ...hoC])];
-            //guarda las horas disponibles
-            var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
-            //si el día es el actual retira las horas que ya hayan pasado
-            const hoy = moment().format('YYYY-MM-DD');
-            if (dia == hoy) {
-                const horaActual = moment().format('HH:mm');
-                horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
-            }
-            //retorna las horas
-            res.json({ horas: horasLibres });
-        } catch (err) {
-            console.error(err);
-            res.status(500).json({ message: 'Server error' });
-        }
-    }
 };
 //método para crear una nota nueva y gurdar en servidor
 notesCtrl.createNewNote = async (req, res) => {
@@ -189,4 +122,69 @@ notesCtrl.deleteNote = async (req, res) => {
     res.redirect('/notes')
 };
 
+notesCtrl.usersCall = async (req, res) => {
+    const id = req.params.id;
+    const dia = req.params.dia;
+    const diaInicio = moment(dia).startOf('day');
+    const diaFin = moment(dia).endOf('day');
+    const idCita = req.params.idCita;
+    //Guardado de datos
+    if (!idCita) {
+        try {
+            //Busca las horas del entrenador
+            const user = await User.findById(id).lean();
+            const horas = user.horas;
+            //busca las horas existentes del entrenador y cliente del día seleccinado
+            const citasEntrenador = await Note.find({ idEntrenador: id, fecha: { $gte: diaInicio, $lt: diaFin } });
+            const citasCliente = await Note.find({ idCliente: req.params.id, fecha: { $gte: diaInicio, $lt: diaFin } });
+            const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
+            console.log(hoE);
+            console.log(hoC);
+            const horasOcupadas = [...new Set([...hoE, ...hoC])];
+            //guarda las horas disponibles
+            var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
+            //si el día es el actual retira las horas que ya hayan pasado
+            const hoy = moment().format('YYYY-MM-DD');
+            if (dia == hoy) {
+                const horaActual = moment().format('HH:mm');
+                horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
+            }
+            //retorna las horas
+            res.json({ horas: horasLibres });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server error' });
+        }
+    } else {
+        try {
+            console.log('ejecuta segudo')
+            //Busca las horas del entrenador
+            const user = await User.findById(id).lean();
+            const horas = user.horas;
+            //saca el id del cliente de la cita.
+            const cita = await Note.findById(idCita).lean();
+            const idCliente = cita.idCliente;
+            //busca las horas existentes de cliente y entrenador del día seleccinado.
+            const citasEntrenador = await Note.find({ idEntrenador: req.params.id, fecha: { $gte: diaInicio, $lt: diaFin }, _id: { $ne: idCita } });
+            const citasCliente = await Note.find({ idCliente: idCliente, fecha: { $gte: diaInicio, $lt: diaFin }, _id: { $ne: idCita } })
+            const hoE = citasEntrenador.map((citasEntrenador) => moment(citasEntrenador.fecha).format('HH:mm'));
+            const hoC = citasCliente.map((citasCliente) => moment(citasCliente.fecha).format('HH:mm'));
+            const horasOcupadas = [...new Set([...hoE, ...hoC])];
+            //guarda las horas disponibles
+            var horasLibres = horas.filter((hora) => !horasOcupadas.includes(hora));
+            //si el día es el actual retira las horas que ya hayan pasado
+            const hoy = moment().format('YYYY-MM-DD');
+            if (dia == hoy) {
+                const horaActual = moment().format('HH:mm');
+                horasLibres = horasLibres.filter((hora) => moment(hora, 'HH:mm').isAfter(moment(horaActual, 'HH:mm')));
+            }
+            //retorna las horas
+            res.json({ horas: horasLibres });
+        } catch (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Server error' });
+        }
+    }
+};
 module.exports = notesCtrl;
