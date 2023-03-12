@@ -18,6 +18,7 @@ adminCtrl.renderEditUserForm = async (req, res) => {
     console.debug('EditUserForm: '+user);
     res.render('admin/edit-usuario', {user});
 };
+
 //renderiza preferencias entrenador
 adminCtrl.renderEntrenadorPref = async (req, res) => {
     const user = await User.findById(req.user.id).lean();

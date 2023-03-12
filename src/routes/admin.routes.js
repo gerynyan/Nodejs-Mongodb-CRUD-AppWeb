@@ -1,15 +1,15 @@
-const {Router} = require('express');
+const { Router } = require('express');
 const router = Router();
 
 //importo los métodos de la carpeta controladores
-const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia, renderEntrenadorPref,updateEntrenador, deletecitasTodas, deletecitasDia } = require('../controllers/admin.controllers');
+const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia, renderEntrenadorPref, updateEntrenador, deletecitasTodas, deletecitasDia } = require('../controllers/admin.controllers');
 
 //Requiero que el usuario este identificado
-const {isAdmin, isEntrenador} = require('../helpers/auth')
+const { isAdmin, isEntrenador } = require('../helpers/auth')
 
 //ADMIN
     //Renderiza usuarios
-    router.get('/admin/permisos', isAdmin, renderPermisos );
+    router.get('/admin/permisos', isAdmin, renderPermisos);
 
     //Editar usuario
     router.get('/admin/permisos/edit-usuario/:id', isAdmin, renderEditUserForm)
@@ -24,12 +24,11 @@ const {isAdmin, isEntrenador} = require('../helpers/auth')
     router.put('/entrenador/preferencias/:id', isEntrenador, updateEntrenador)
 
     //Renderiza citas
-    router.get('/entrenador/citas', isEntrenador, renderCitas );
+    router.get('/entrenador/citas', isEntrenador, renderCitas);
     router.get('/entrenador/citas-dia', isEntrenador, renderCitasDia);
 
     //Elimina citas
     router.delete('/entrenador/citas/delete/:id', isEntrenador, deletecitasTodas);
     router.delete('/entrenador/citas-dia/delete/:id', isEntrenador, deletecitasDia);
-
 
 module.exports = router;

@@ -4,9 +4,6 @@ const usersCtrl = {};
 const passport = require('passport')
 const User = require('../models/User');
 
-//Requiero que el usuario este identificado
-const {isAdmin} = require('../helpers/auth')
-
 //Renderiza registro
 usersCtrl.renderSignUpForm = (req, res) =>{
     res.render('users/signup');
@@ -51,6 +48,7 @@ usersCtrl.signup = async (req, res) =>{
 usersCtrl.renderSignInForm = (req, res) => {
     res.render('users/signin');
 }
+
 // Verifica si el acceso ha tenido éxito
 usersCtrl.signin = function(req, res, next){ 
     passport.authenticate('local', function(err, user, info) {
@@ -76,14 +74,6 @@ usersCtrl.signin = function(req, res, next){
         });
     })(req, res, next);
 };
-
-// Verifica si el acceso ha tenido éxito ANTERIOR
-// usersCtrl.signin = passport.authenticate('local',  {
-//     failureRedirect: '/users/signin',
-//     successRedirect: '/notes',
-//     failureFlash: true
-// })
-
 
 //Para cerrar sesión
 usersCtrl.logout = (req, res) => {
