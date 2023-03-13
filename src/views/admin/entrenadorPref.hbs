@@ -1,4 +1,4 @@
-<div class="col-md-4 mx-auto">
+<div class="col-sm-8 col-lg-5 col-xl-4 mx-auto">
     <div class="card">
         <div class="card-header">
             <h3>Preferencias</h3>
@@ -14,7 +14,7 @@
                     <textarea name="email" class="form-control mb-3">{{user.email}}</textarea>
                 </div>
                 <p>Seleccione las horas en las que esté disponible, (Las citas creadas antes de este cambio seguirán existiendo):</p>
-                <div class="row row cols-3">
+                <div class="row row-cols-2 row-cols-md-3 mb-3">
                     {{#each allHours}}
                     <div class="col">
                         <div class="form-check form-switch">
@@ -24,7 +24,7 @@
                     {{/each}}
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-primary btn-block" type="submit">GUARDAR</button>
+                    <button class="btn btn-primary btn-block w-100" type="submit">GUARDAR</button>
                 </div>
             </form>
         </div>

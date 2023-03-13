@@ -1,4 +1,4 @@
-<div class="col-md-4 mx-auto">
+<div class="col-sm-8 col-lg-5 col-xl-4 mx-auto">
     <div class="card text-center">
         <div class="card-header">
             <h3><b>Editando Cita</b></h3>
@@ -12,15 +12,15 @@
                 <div class="form-group mb-3">
                     <textarea name="description" class="form-control">{{note.description}}</textarea>
                 </div>
-                <div class="form-group mb-3">
+                <div class="form-group">
                     <label for="fecha">Fecha</label>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="date" class="form-control" id="fecha" name="fecha"
+                    <div class="row row-cols-1 row-cols-md-2">
+                        <div class="col">
+                            <input type="date" class="form-control mb-3" id="fecha" name="fecha"
                                 value="{{moment note.fecha 'YYYY-MM-DD'}}" min="{{fechaHoy}}">
                         </div>
-                        <div class="col-md-6">
-                            <select class="form-control" name="hora" id="hora">
+                        <div class="col">
+                            <select class="form-control mb-3" name="hora" id="hora">
                                 {{#each horasLibres}}
                                 <option value="{{this}}" {{#if (eq this ../horaCita)}} selected {{/if}}>
                                     {{this}}
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="form-group mb-3">
-                    <button class="btn btn-primary btn-block" type="submit">GUARDAR</button>
+                    <button class="btn btn-primary btn-block w-100" type="submit">GUARDAR</button>
                 </div>
             </form>
         </div>
