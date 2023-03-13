@@ -12,7 +12,7 @@ usersCtrl.renderSignUpForm = (req, res) =>{
 usersCtrl.signup = async (req, res) =>{
     const errors = []
     //VERIFICA CONTRASEÑA Y EMAIL
-    const {name,surname, email, password, confirm_password} = req.body;
+    const {name, surname, email, password, confirm_password} = req.body;
     if(password != confirm_password){
         errors.push({text: 'Contraseñas no coinciden'});
     }
