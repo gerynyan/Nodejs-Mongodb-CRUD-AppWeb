@@ -127,4 +127,23 @@ adminCtrl.deletecitasDia = async (req, res) => {
     res.redirect('/entrenador/citas-dia')
 };
 
+adminCtrl.renderNoteformE = async (req, res) => {
+    const users = await User.find({ idEntrenador: req.user }).lean();
+    const fechaHoy = moment().format('YYYY-MM-DD');
+    res.render('admin/new-note', { users, fechaHoy });
+};
+
+//método para crear una nota nueva y gurdar en servidor
+adminCtrl.createNewNoteE = async (req, res) => {
+    const { title, description, fecha, hora, idCliente } = req.body;
+    console.log("title: " + title + " desc: " + description + " fecha: " + fecha + " hora: " + "identre: " + idEntrenador);
+    const newFecha = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm').toDate();
+    console.log("new fecha: " + newFecha);
+    const newNote = new Note({ title, description, fecha: newFecha, idCliente });
+    newNote.idEntrenador = req.user.id;
+    await newNote.save();
+    // mensaje
+    req.flash('succes_msg', 'Nota agregada con éxito');
+    res.redirect('/entrenador/citas-dia');
+};
 module.exports = adminCtrl;

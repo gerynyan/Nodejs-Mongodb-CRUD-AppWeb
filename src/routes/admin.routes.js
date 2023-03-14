@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 
 //importo los métodos de la carpeta controladores
-const { renderPermisos, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia, renderEntrenadorPref, updateEntrenador, deletecitasTodas, deletecitasDia } = require('../controllers/admin.controllers');
+const { renderPermisos, renderNoteformE, createNewNoteE, deleteUser, renderEditUserForm, updateUser, renderCitas, renderCitasDia, renderEntrenadorPref, updateEntrenador, deletecitasTodas, deletecitasDia } = require('../controllers/admin.controllers');
 
 //Requiero que el usuario este identificado
 const { isAdmin, isEntrenador } = require('../helpers/auth')
@@ -30,5 +30,9 @@ const { isAdmin, isEntrenador } = require('../helpers/auth')
     //Elimina citas
     router.delete('/entrenador/citas/delete/:id', isEntrenador, deletecitasTodas);
     router.delete('/entrenador/citas-dia/delete/:id', isEntrenador, deletecitasDia);
+
+    //Crea citas
+    router.get('/entrenador/nueva-cita', isEntrenador, renderNoteformE);
+    router.post('/entrenador/new-note', isEntrenador, createNewNoteE);
 
 module.exports = router;

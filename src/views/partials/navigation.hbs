@@ -22,22 +22,25 @@
                     <a class="nav-link" href="/admin/permisos">Permisos</a>
                 </li>
                 <li id="ocCitas" class="nav-item">
-                    <a class="nav-link" href="/entrenador/citas">"Citas Entrenador"</a>
+                    <a class="nav-link" href="/entrenador/citas">Todas las Citas</a>
                 </li>
                 <li id="ocCitasHoy" class="nav-item">
-                    <a class="nav-link" href="/entrenador/citas-dia">"Citas de Hoy"</a>
+                    <a class="nav-link" href="/entrenador/citas-dia">Citas de Hoy</a>
                 </li>
                 <li id="ocPreferencias" class="nav-item">
-                    <a class="nav-link" href="/entrenador/preferencias">"Preferencias"</a>
+                    <a class="nav-link" href="/entrenador/preferencias">Preferencias</a>
                 </li>
+                {{!-- <li id="ocNuevo" class="nav-item">
+                    <a class="nav-link" href="/entrenador/nueva-cita">Nueva Cita</a>
+                </li> --}}
                 <li class="nav-item dropdown">
                     <a id="navbarDropdownMenuLink" class="nav-link dropdown-toggle" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Citas
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" href="/notes">Todas las Citas</a></li>
-                        <li><a class="dropdown-item" href="/notes/add">Agregar nueva Cita</a></li>
+                        <li id="ocCliente" class="nav-item"><a class="dropdown-item" href="/notes">Todas las Citas</a></li>
+                        <li id="ocCliente" class="nav-item"><a class="dropdown-item" href="/notes/add">Agregar nueva Cita</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -79,5 +82,5 @@
         ocPreferencias.classList.remove('hidden');
     } else {
         ocPreferencias.classList.add('hidden');
-    }     
+    }   
 </script>
